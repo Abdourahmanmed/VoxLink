@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+  
+
+/* Définir une ombre bleue personnalisée */
+.shadow-blue {
+    box-shadow: 0 4px 6px rgba(0, 43, 91, 0.5), 0 1px 3px rgba(0, 43, 91, 0.1);
+}

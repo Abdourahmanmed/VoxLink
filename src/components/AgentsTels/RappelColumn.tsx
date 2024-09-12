@@ -26,7 +26,7 @@ export type Rappel = {
     Script: string;
 };
 
-export const RappelColumn: ColumnDef<User>[] = [
+export const RappelColumn: ColumnDef<Rappel>[] = [
     {
         id: "select",
         header: ({ table }) => (

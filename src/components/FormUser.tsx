@@ -17,39 +17,40 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { FormError } from "./FormError";
 import { useTransition } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { FormSucces } from "./FormSucces";
 
-export default function CreateUser() {
+interface CreatePropsUser {
+    onSubmit: (values: z.infer<typeof RegisterSchema>) => void;
+    errorMessage:string | undefined;
+    successMessage:string| undefined;
+}
+
+export default function CreateUser({ onSubmit,successMessage,errorMessage }: CreatePropsUser) {
 
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
         defaultValues: {
-            nom: '',
-            email: '',
-            password: '',
-            telephone: '',
-            adresse: ''
+            Nom: '',
+            Email: '',
+            Password: '',
+            Telephone: '',
+            Adresse: '',
+            Role: ''
         },
     });
-    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        startTransition(() => {
-            console.log(values);
-        })
-    }
+
     return (
-
-
         <div className="w-full p-8 flex flex-col items-center mx-auto">
-
-
             {/* form card */}
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-xs mx-auto">
                     <div className="space-y-2">
                         <FormField
                             control={form.control}
-                            name="nom"
+                            name="Nom"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Nom</FormLabel>
@@ -62,7 +63,7 @@ export default function CreateUser() {
                         />
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="Email"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Email</FormLabel>
@@ -75,7 +76,7 @@ export default function CreateUser() {
                         />
                         <FormField
                             control={form.control}
-                            name="password"
+                            name="Password"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Password</FormLabel>
@@ -88,7 +89,7 @@ export default function CreateUser() {
                         />
                         <FormField
                             control={form.control}
-                            name="telephone"
+                            name="Telephone"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Telephone</FormLabel>
@@ -101,7 +102,7 @@ export default function CreateUser() {
                         />
                         <FormField
                             control={form.control}
-                            name="adresse"
+                            name="Adresse"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Adresse</FormLabel>
@@ -112,8 +113,35 @@ export default function CreateUser() {
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="Role"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-blue">Adresse</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            {...field}
+                                            onValueChange={(value) => {
+                                                field.onChange(value);  // Mettre à jour la valeur du formulaire
+                                            }}
+                                        >
+                                            <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
+                                                <SelectValue placeholder="Sélectionner une compagne" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Teleconseiller">Teleconseiller</SelectItem>
+                                                <SelectItem value="AgentCommerce">Agent Commercial</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
-                    <FormError />
+                    <FormError message={errorMessage}/>
+                    <FormSucces message={successMessage} />
                     <Button type="submit" className="w-full mt-2 bg-blue" disabled={isPending}>Enregistrer</Button>
                 </form>
 

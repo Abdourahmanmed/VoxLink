@@ -1,3 +1,4 @@
+
 import { KeyRound, Menu, UserRoundCog } from 'lucide-react';
 import {
     Tooltip,
@@ -10,6 +11,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import Session from './Session';
+
 
 
 
@@ -26,7 +29,7 @@ export default function Navbar() {
                                 <PopoverTrigger asChild>
                                     <div className='flex gap-2 items-center'>
                                         <UserRoundCog />
-                                        Loula Abdi
+                                        <Session /> 
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent className='shadow-blue bg-blanc'>

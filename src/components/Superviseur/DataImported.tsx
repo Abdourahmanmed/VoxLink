@@ -1,19 +1,44 @@
+import { useEffect, useState } from "react";
 import { DataTableImportation } from "../ReUsableDataTable";
 import { ImportedData, ImportedColumns } from "./Culumns/CulumnsDataImported";
+import { SelectionCompagne } from "@/Schemas";
+import { z } from "zod";
+import { useAppContext } from "../context/AppContext";
 
 export default function DataImported() {
-    const reporteData: ImportedData[] = [
-        {
-            id: '1',
-            Nom: "Donald Trump",
-            Email: "Donal@gmail.com",
-            Telephone: 77323110,
-            Adresse: "quartier 2",
+    //state 
+    const { ContactData,setContactData } = useAppContext()
+
+    //comportement
+    const FetchCOntactData = async (value: z.infer<typeof SelectionCompagne>) => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherContactAujourdhui`;
+        try {
+            const playload = {
+                Compagne : value
+            }
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(playload),
+            })
+            const responseData = await response.json();
+
+            if (!response.ok || responseData.error) {
+                console.log(responseData.error || "Une erreur réseau a été détectée.");
+            } else {
+                setContactData(responseData);
+            }
+
+        } catch (error) {
+            console.log('Erreur : ', error);
         }
-    ];
+    }
+    //render
     return (
         <div>
-            <DataTableImportation data={reporteData} columns={ImportedColumns} typeName="Nom" />
+            <DataTableImportation data={ContactData} columns={ImportedColumns} typeName="Nom" FetchData={FetchCOntactData} />
         </div>
     )
 }

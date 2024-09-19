@@ -76,15 +76,11 @@ export const ReportColumns: ColumnDef<Report>[] = [
         header: "Adresse",
     },
     {
-        accessorKey: "Status",
+        accessorKey: "Qualification",
         header: "Status",
     },
     {
         accessorKey: "Commentaire",
         header: "Commentaire",
-    },
-    {
-        id: "actions",
-        header: "Actions",
     },
 ]

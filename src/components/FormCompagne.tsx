@@ -16,29 +16,30 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { FormError } from "./FormError";
-import { useTransition } from "react";
 import { Textarea } from "./ui/textarea";
+import { FormSucces } from "./FormSucces";
 
-export default function CreateCompagne() {
+interface CompagneProps {
+    successMessage: string | undefined;
+    errorMessage: string | undefined;
+    isPending: boolean;
+    onSubmit: (values: z.infer<typeof CompagneSchema>) => void;
+}
 
-    const [isPending, startTransition] = useTransition();
+export default function CreateCompagne({successMessage,errorMessage,isPending,onSubmit}:CompagneProps) {
 
     const form = useForm<z.infer<typeof CompagneSchema>>({
         resolver: zodResolver(CompagneSchema),
         defaultValues: {
-            nom: '',
-            societe: '',
-            script: '',
+            Nom: '',
+            Societe: '',
+            Script: '',
         }
     });
-    const onSubmit = (values: z.infer<typeof CompagneSchema>) => {
-        startTransition(() => {
-            console.log(values);
-        })
-    }
+
+    
+
     return (
-
-
         <div className="w-full p-8 flex flex-col items-center mx-auto">
 
 
@@ -48,7 +49,7 @@ export default function CreateCompagne() {
                     <div className="space-y-2">
                         <FormField
                             control={form.control}
-                            name="nom"
+                            name="Nom"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Nom</FormLabel>
@@ -61,12 +62,12 @@ export default function CreateCompagne() {
                         />
                         <FormField
                             control={form.control}
-                            name="societe"
+                            name="Societe"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Societe</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="fatouma@example.com" type="email" disabled={isPending} />
+                                        <Input {...field} placeholder="fatouma@example.com" type="text" disabled={isPending} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -74,7 +75,7 @@ export default function CreateCompagne() {
                         />
                         <FormField
                             control={form.control}
-                            name="script"
+                            name="Script"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-blue">Script</FormLabel>
@@ -86,7 +87,8 @@ export default function CreateCompagne() {
                             )}
                         />
                     </div>
-                    <FormError />
+                    <FormError message={errorMessage} />
+                    <FormSucces message={successMessage} />
                     <Button type="submit" className="w-full mt-2 bg-blue" disabled={isPending}>Enregistrer</Button>
                 </form>
 

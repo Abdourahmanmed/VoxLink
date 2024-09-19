@@ -35,17 +35,25 @@ import {
 
 import { useState } from "react"
 import { toast } from "react-toastify"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { useForm } from "react-hook-form"
+import { SelectionCompagne } from "@/Schemas"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     typeName: string
+    FetchData : (value :z.infer<typeof SelectionCompagne>) => void
 }
 
 export function DataTableImportation<TData, TValue>({
     columns,
     data,
     typeName,
+    FetchData,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -76,6 +84,18 @@ export function DataTableImportation<TData, TValue>({
         },
     })
 
+    //form selection 
+    const selcte = useForm<z.infer<typeof SelectionCompagne>>({
+        resolver: zodResolver(SelectionCompagne),
+        defaultValues: {
+            Compagne: ""
+        },
+    })
+    // Fonction pour gérer les changements d'état et récupérer les contacts à rappeler
+    const handleChange = async (value: z.infer<typeof SelectionCompagne>) => {
+        await FetchData(value);
+    };
+
 
     return (
         <>
@@ -89,12 +109,36 @@ export function DataTableImportation<TData, TValue>({
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />
-                <select name="campagne" id="campagne" className="relative outline-none border border-blue rounded-lg px-4 w-max py-2 flex-1 cursor-pointer">
-                    <option value="Recouvrement">Recouvrement</option>
-                    <option value="E-suuq">E-suuq</option>
-                    <option value="Colis-Ems">Colis EMS</option>
-                    <option value="petit_paquet">Petit Paquet</option>
-                </select>
+                <Form {...selcte}>
+                    <FormField
+                        control={selcte.control}
+                        name="Compagne"
+                        render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormControl>
+                                    <Select
+                                        {...field}
+                                        onValueChange={(value) => {
+                                            field.onChange(value);  // Mettre à jour la valeur du formulaire
+                                            handleChange(value);    // Effectuer des actions supplémentaires
+                                        }}
+                                    >
+                                        <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
+                                            <SelectValue placeholder="Sélectionner une compagne" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="E-suuq">E-suuq</SelectItem>
+                                            <SelectItem value="Recouvrement">Recouvrement</SelectItem>
+                                            <SelectItem value="Petite paquet">Petite paquet</SelectItem>
+                                            <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </Form>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button className="ml-auto bg-blue text-blanc hover:bg-blue/90 hover:text-blanc duration-500">

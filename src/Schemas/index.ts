@@ -11,27 +11,30 @@ export const LoginSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-    nom: z.string().min(1, { message: "le Nom  est obligatoire." }),
-    email: z.string().email({
+    Nom: z.string().min(1, { message: "le Nom  est obligatoire." }),
+    Email: z.string().email({
         message: "l'email est obligatoire"
     }),
-    password: z.string().min(1, {
+    Password: z.string().min(1, {
         message: "le password est obligatoire."
     }),
-    telephone: z.string().min(1, {
+    Telephone: z.string().min(1, {
         message: "le Telephone est obligatoire."
     }),
-    adresse: z.string().min(1, {
+    Adresse: z.string().min(1, {
         message: "l'adresse est obligatoire."
+    }),
+    Role: z.string().min(1, {
+        message: "choisir un role."
     })
 });
 
 export const CompagneSchema = z.object({
-    nom: z.string().min(1, { message: "le Nom  est obligatoire." }),
-    societe: z.string().min(1, {
+    Nom: z.string().min(1, { message: "le Nom  est obligatoire." }),
+    Societe: z.string().min(1, {
         message: "la societe  est obligatoire"
     }),
-    script: z.string().min(1, {
+    Script: z.string().min(1, {
         message: "le script est obligatoire"
     }),
 
@@ -59,6 +62,29 @@ export const DemandeLivraison = z.object({
     Adresse: z.string().min(1, "L'adresse est obligatoire."),
     Date_livraison: z.string().min(1, "La date de livraison est obligatoire."),
 });
+// Pour la demande de livraison
+export const SelectionCompagne = z.object({
+    Compagne: z.string().min(1, "La sélection d'une compagne est obligatoire."),
+});
+
+
+export const ContactShema = z.object({
+    Nom: z.string().min(1, "le Nom est obligatoire."),
+    Email: z.string().email({
+        message: "l'email est obligatoire"
+    }),
+    Telephone: z.string().min(1, "Telephone est obligatoire."),
+    Adresse: z.string().min(1, "Adresse est obligatoire."),
+    Provenance: z.string().min(1, "Provenance est obligatoire."),
+    Date_Enregistrement: z.string().min(1, "Date Enregistrement est obligatoire."),
+    Nombre_colis: z.number().min(1, "Nombre de colis est obligatoire."),
+    Poids: z.string().min(1, "Le poid est obligatoire."),
+    Frais_Postaux: z.string().min(1, "Frais_postaux est obligatoire."),
+    Frais_Douane: z.string().min(1, "Frais douane est obligatoire."),
+    Reference: z.string().min(1, "La reference est obligatoire."),
+    Date_Abonnement: z.string().min(1, "Date abonnement  est obligatoire."),
+    Nationalite: z.string().min(1, "Nationalite est obligatoire."),
+})
 
 
 

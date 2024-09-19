@@ -66,7 +66,7 @@ export default function Affectation() {
                             control={form.control}
                             name="campagne"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="w-full">
                                     <Select
                                         onValueChange={field.onChange}
                                         value={field.value}

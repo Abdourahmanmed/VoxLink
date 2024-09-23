@@ -17,31 +17,37 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { browser: "AppelTotal", visitors: 22, fill: "var(--color-AppelTotal)" },
-  { browser: "AppelPositive", visitors: 15, fill: "var(--color-AppelPositive)" },
-  { browser: "AppelNegative", visitors: 7, fill: "var(--color-AppelNegative)" },
-]
 
-const chartConfig = {
-  visitors: {
-    label: "Appels",
-  },
-  AppelTotal: {
-    label: "Appel Total",
-    color: "#002b5b",
-  },
-  AppelPositive: {
-    label: "Appel Positive",
-    color: "#22C55E",
-  },
-  AppelNegative: {
-    label: "Appel Negative",
-    color: "#EF4444",
-  }
-} satisfies ChartConfig
+interface MychartPropos {
+  CallTotalData:number
+  PositiveCallTotalData:number
+  NegativeCallTotalData: number
+}
 
-export function MyBetterChart() {
+export function MyBetterChart({CallTotalData,PositiveCallTotalData,NegativeCallTotalData}:MychartPropos) {
+  const chartData = [
+    { browser: "AppelTotal", visitors: CallTotalData, fill: "var(--color-AppelTotal)" },
+    { browser: "AppelPositive", visitors: PositiveCallTotalData, fill: "var(--color-AppelPositive)" },
+    { browser: "AppelNegative", visitors: NegativeCallTotalData, fill: "var(--color-AppelNegative)" },
+  ]
+
+  const chartConfig = {
+    visitors: {
+      label: "Appels",
+    },
+    AppelTotal: {
+      label: "Appel Total",
+      color: "#002b5b",
+    },
+    AppelPositive: {
+      label: "Appel Positive",
+      color: "#22C55E",
+    },
+    AppelNegative: {
+      label: "Appel Negative",
+      color: "#EF4444",
+    }
+  } satisfies ChartConfig
   return (
     <Card className="w-full bg-blanc shadow-blue">
       <CardHeader>

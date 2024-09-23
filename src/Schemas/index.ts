@@ -42,10 +42,11 @@ export const CompagneSchema = z.object({
 
 // Schéma Zod pour la validation
 export const affectationSchema = z.object({
-    campagne: z.enum(["Recouvrement", "E-suuq", "Colis-Ems", "petit_paquet", "Amazone", "Essuq-prospection"]),
-    contactId: z.string(),
-    agentsIds: z.array(z.string()).nonempty("Veuillez sélectionner au moins un contact.")
+    campagne: z.string().min(1, "Veuillez sélectionner une campagne."),
+    AgentsId: z.string().min(1, "Veuillez sélectionner un agent."),
+    ContactIds: z.array(z.string()).min(1, "Veuillez sélectionner au moins un contact."),
 });
+
 
 // Define Zod schema for form validation
 export const qualificationSchema = z.object({

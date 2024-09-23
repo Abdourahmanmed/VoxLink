@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { MyBetterChart } from "../MyBetterChart";
 import { Agents, AgentsColumns } from "../Superviseur/Culumns/CulumnsAgents";
 import { Dashbordata, DashbordColumns } from "../Superviseur/Culumns/DashCulumns";
@@ -5,48 +6,140 @@ import { TableWithOutFilter } from "../TableWithOutFilter";
 import BoxInfoDetails from "./BoxInfoDetails/BoxInfoDetails";
 
 export default function Dashbord() {
-    //test compagner
-    const CompagneData: Dashbordata[] = [
-        {
-            id: "1",
-            Nom: "Recouvrement",
-        },
-        {
-            id: "2",
-            Nom: "Amazone",
-        },
-        {
-            id: "3",
-            Nom: "Esuuq",
-        },
-        {
-            id: "4",
-            Nom: "Colis Ems",
-        },
-    ];
-    //test agents data
-    const AgentsData: Agents[] = [
-        {
-            id: '1',
-            Nom: "Donald Trump",
-            Email: "Donal@gmail.com",
-            Telephone: 77323110,
-            Adresse: "quartier 2",
-        }
-    ];
+    //state 
+    const [CompagneData, SetCompagneData] = useState<Dashbordata[]>([])
+    const [AgentsData, SetAgentsData] = useState<Agents[]>([])
+    const [CallTotalData, SetCallTotalData] = useState(0);
+    const [NegativeCallTotalData, SetNegativeCallTotalData] = useState(0);
+    const [PositiveCallTotalData, SetPositiveCallTotalData] = useState(0);
 
+    //comportement
+
+    //fonction qui afficher les nombres total des appelles 
+    const fetchCallTotalData = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParJour`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetCallTotalData(responseData.total_appels_jour);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    //fonction qui afficher les nombres total des appelles negative
+    const fetchNegativeCallTotalData = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParJour`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetNegativeCallTotalData(responseData.total_appels_negative_jour);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    //fonction qui afficher les nombres total des appelles  positive
+    const fetchPositiveCallTotalData = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParJour`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetPositiveCallTotalData(responseData.total_appels_positive_jour);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //fonction qui afficher le 5 premier compagne
+    const fetchCompagneData = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherCompagneLimiteDe5`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetCompagneData(responseData);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //fonction qui afficher le 5 premier utilisateur 
+    const fetchAgentsData = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherPourSuperviseurLimit5`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetAgentsData(responseData);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // le useEffect 
+    useEffect(() => {
+        fetchCallTotalData();
+        fetchNegativeCallTotalData();
+        fetchPositiveCallTotalData();
+        fetchCompagneData();
+        fetchAgentsData();
+    }, [])
+
+    //render
     return (
         <main className="w-full">
             {/* the box information */}
             <div className="flex w-full flex-wrap gap-20">
-                <BoxInfoDetails title="Nombres des appelles totals" total="22" color="blue"  key={1}/>
-                <BoxInfoDetails title="Nombres des appelles positive" total="15" color="green-500" key={2} />
-                <BoxInfoDetails title="Nombres des appelles negative" total="7" color="red-500"  key={3}/>
+                <BoxInfoDetails title="Nombres des appelles totals" total={CallTotalData} color="blue" SetCallData={SetCallTotalData} type="Total" key={1} />
+                <BoxInfoDetails title="Nombres des appelles positive" total={PositiveCallTotalData} SetCallData={SetPositiveCallTotalData} type="Positive" color="green-500" key={2} />
+                <BoxInfoDetails title="Nombres des appelles negative" total={NegativeCallTotalData} SetCallData={SetNegativeCallTotalData} type="Negative" color="red-500" key={3} />
             </div>
             {/* charte and table of compagne */}
             <div className="flex gap-4">
                 <div className="w-2/3 py-4">
-                    <MyBetterChart />
+                    <MyBetterChart CallTotalData={CallTotalData} PositiveCallTotalData={PositiveCallTotalData} NegativeCallTotalData={NegativeCallTotalData} />
                 </div>
                 <div className="w-2/3 py-4">
                     <div className="bg-blanc w-full p-4 rounded-lg shadow-blue">

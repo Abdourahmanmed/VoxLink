@@ -21,8 +21,8 @@ export type DemandeLivraison = {
     id: string
     Nom: string
     Telephone: number
-    adresse: string
-    date: string
+    Adresse: string
+    Date: string
 }
 
 export const DemandeColumns: ColumnDef<DemandeLivraison>[] = [
@@ -71,7 +71,7 @@ export const DemandeColumns: ColumnDef<DemandeLivraison>[] = [
         header: "Adresse",
     },
     {
-        accessorKey: "Date",
+        accessorKey: "Date_livraison",
         header: "Date livraison",
     },
     

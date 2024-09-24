@@ -23,30 +23,29 @@ import {
 } from "@/components/ui/table"
 
 import { Button } from "@/components/ui/button"
-
 import { Input } from "@/components/ui/input"
-
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-import { useState } from "react"
-import { toast } from "react-toastify"
+import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { useForm } from "react-hook-form"
 import { SelectionCompagne } from "@/Schemas"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
+import { FileUp } from "lucide-react"
+import { usePathname } from "next/navigation"
+import * as XLSX from "xlsx"; // Importer la librairie SheetJS
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     typeName: string
-    FetchData : (value :z.infer<typeof SelectionCompagne>) => void
+    FetchData: (value: z.infer<typeof SelectionCompagne>) => void
 }
 
 export function DataTableImportation<TData, TValue>({
@@ -84,23 +83,68 @@ export function DataTableImportation<TData, TValue>({
         },
     })
 
-    //form selection 
+    const [selectCompagner, setSelectCompagner] = useState([])
+
+    const path = usePathname()
+
+    // Fonction d'exportation des données en Excel
+    const exportToExcel = () => {
+        const exportData = table.getRowModel().rows.map((row) =>
+            row.getVisibleCells().reduce((acc, cell) => {
+                acc[cell.column.id] = cell.getContext().getValue()
+                return acc
+            }, {} as { [key: string]: any })
+        )
+
+        const wb = XLSX.utils.book_new()
+        const ws = XLSX.utils.json_to_sheet(exportData)
+        XLSX.utils.book_append_sheet(wb, ws, "Status des appelles")
+        XLSX.writeFile(wb, "Status_des_appelles.xlsx")
+    }
+
+    // Fetch logic
+    const fetchCompagner = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`
+
+        try {
+            const response = await fetch(apiUrl, { method: 'GET' })
+
+            if (!response.ok) {
+                console.error("Erreur lors de la requête.")
+                return
+            }
+
+            const responseData = await response.json()
+
+            if (responseData.error) {
+                console.error("Erreur serveur:", responseData.error)
+                return
+            }
+
+            setSelectCompagner(responseData)
+        } catch (error) {
+            console.error("Erreur récupération des campagnes:", error)
+        }
+    }
+
     const selcte = useForm<z.infer<typeof SelectionCompagne>>({
         resolver: zodResolver(SelectionCompagne),
         defaultValues: {
             Compagne: ""
         },
     })
-    // Fonction pour gérer les changements d'état et récupérer les contacts à rappeler
-    const handleChange = async (value: z.infer<typeof SelectionCompagne>) => {
-        await FetchData(value);
-    };
 
+    const handleChange = async (value: z.infer<typeof SelectionCompagne>) => {
+        await FetchData(value)
+    }
+
+    useEffect(() => {
+        fetchCompagner()
+    }, [])
 
     return (
         <>
-            {/* column filter */}
-            <div className="flex items-center gap-8  bg-blanc w-full h-max rounded-lg shadow-blue p-2">
+            <div className="flex items-center gap-8 bg-blanc w-full h-max rounded-lg shadow-blue p-2">
                 <Input
                     placeholder="Filter name..."
                     value={(table.getColumn(typeName)?.getFilterValue() as string) ?? ""}
@@ -119,18 +163,23 @@ export function DataTableImportation<TData, TValue>({
                                     <Select
                                         {...field}
                                         onValueChange={(value) => {
-                                            field.onChange(value);  // Mettre à jour la valeur du formulaire
-                                            handleChange(value);    // Effectuer des actions supplémentaires
+                                            field.onChange(value)
+                                            handleChange(value)
                                         }}
                                     >
                                         <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
                                             <SelectValue placeholder="Sélectionner une compagne" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="E-suuq">E-suuq</SelectItem>
-                                            <SelectItem value="Recouvrement">Recouvrement</SelectItem>
-                                            <SelectItem value="Petite paquet">Petite paquet</SelectItem>
-                                            <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                            {selectCompagner && selectCompagner.length > 0 ? (
+                                                selectCompagner.map((items, index) => (
+                                                    <SelectItem value={items.Nom} key={index}>
+                                                        {items.Nom}
+                                                    </SelectItem>
+                                                ))
+                                            ) : (
+                                                <p>Aucune campagne disponible</p>
+                                            )}
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
@@ -139,9 +188,19 @@ export function DataTableImportation<TData, TValue>({
                         )}
                     />
                 </Form>
+                {(path && (path === "/Superviseur/status_des_appelles" || path === "/Superviseur/Rapport")) ? (
+                    <button
+                        className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex justify-center items-center space-x-2 rounded-lg"
+                        onClick={exportToExcel}
+                    >
+                        <FileUp className="" />
+                        <span>Exportation</span>
+                    </button>
+                ) : null}
+
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button className="ml-auto bg-blue text-blanc hover:bg-blue/90 hover:text-blanc duration-500">
+                        <Button className="ml-auto bg-blue text-blanc hover:bg-blue/90 duration-500">
                             Columns
                         </Button>
                     </DropdownMenuTrigger>
@@ -149,45 +208,36 @@ export function DataTableImportation<TData, TValue>({
                         {table
                             .getAllColumns()
                             .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                            ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            {/* data table */}
-            <div className="rounded-md bg-blanc w-full h-max rounded-lg shadow-blue mt-3">
+
+            <div className="rounded-md bg-blanc w-full h-max shadow-blue mt-3">
                 <Table>
-                    <TableHeader >
+                    <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="border-b border-blue">
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id} className="">
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
-                    <TableBody className="">
+                    <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
@@ -196,7 +246,7 @@ export function DataTableImportation<TData, TValue>({
                                     className="border-b border-blue text-blue"
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} >
+                                        <TableCell key={cell.id}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
@@ -205,7 +255,7 @@ export function DataTableImportation<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    Aucun résultat.
                                 </TableCell>
                             </TableRow>
                         )}

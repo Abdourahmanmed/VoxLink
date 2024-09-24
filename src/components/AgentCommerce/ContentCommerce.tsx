@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { DataTable } from "../DataTable";
 import { Columns, User } from "./Columns";
 import { Download } from 'lucide-react';
@@ -21,8 +21,9 @@ export default function ContentCommerce() {
     const path = usePathname();
     const [DemandeLivraison, setDemandeLivraison] = useState<DemandeLivraison[]>([])
     const [ListeContact, setListeContact] = useState<User[]>([]);
+    const [selectCompagner, setselectCompagner] = useState([]);
 
-  
+
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -38,27 +39,86 @@ export default function ContentCommerce() {
             Compagne: ""
         },
     })
+    
+    //Fetch compagnes logic here...
+    const fetchCompagner = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+
+        try {
+            const response = await fetch(apiUrl, { method: 'GET' });
+
+            // Vérification de la réponse
+            if (!response.ok) {
+                console.error("Erreur lors de l'exécution de la requête.");
+                return;
+            }
+
+            const responseData = await response.json();
+
+            // Vérification des erreurs dans la réponse
+            if (responseData.error) {
+                console.error("Erreur du serveur:", responseData.error);
+                return;
+            }
+
+            // Mettre à jour l'état avec les données récupérées
+            setselectCompagner(responseData);
+
+        } catch (error) {
+            console.error("Erreur lors de la récupération des campagnes:", error);
+        }
+    };
 
     // Fonction pour gérer les changements d'état et récupérer les contacts à rappeler
     const handleChange = async (value: z.infer<typeof SelectionCompagne>) => {
-        console.log(value);
+        fetchContactQualifier(value);
     };
 
     //fonction pour gerer
-    const fetchDemandeLivraison = async () =>{
+    const fetchDemandeLivraison = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DemandeLivraison`;
         try {
-            
+            const response = await fetch(apiUrl, {
+                method: "GET",
+            });
+            const responseData = await response.json();
+            if (response.ok) {
+                setDemandeLivraison(responseData);
+            } else {
+                console.error(responseData.error || "Erreur réseau détectée.");
+            }
         } catch (error) {
-            
+            console.error("Erreur de requête", error);
         }
     }
-    const fetchContactQualifier = async () =>{
+    const fetchContactQualifier = async (value: z.infer<typeof SelectionCompagne>) => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherRapel`;
         try {
-            
+            const playload = {
+                Compagne: value,
+            }
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(playload),
+            });
+            const responseData = await response.json();
+            if (response.ok) {
+                setListeContact(responseData);
+            } else {
+                console.error(responseData.error || "Erreur réseau détectée.");
+            }
         } catch (error) {
-            
+            console.error("Erreur de requête", error);
         }
     }
+
+    useEffect(() => {
+        fetchDemandeLivraison();
+        fetchCompagner();
+    }, [])
 
     return (
         <main>
@@ -85,10 +145,15 @@ export default function ContentCommerce() {
                                                         <SelectValue placeholder="Sélectionner une compagne" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value="E-suuq">E-suuq</SelectItem>
-                                                        <SelectItem value="Recouvrement">Recouvrement</SelectItem>
-                                                        <SelectItem value="Petite paquet">Petite paquet</SelectItem>
-                                                        <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                                        {selectCompagner && selectCompagner.length > 0 ? (
+                                                            selectCompagner.map((items, index) => (
+                                                                <SelectItem value={items.Nom} key={index}>
+                                                                    {items.Nom}
+                                                                </SelectItem>
+                                                            ))
+                                                        ) : (
+                                                            <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                        )}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -141,17 +206,22 @@ export default function ContentCommerce() {
                                                 {...field}
                                                 onValueChange={(value) => {
                                                     field.onChange(value);  // Mettre à jour la valeur du formulaire
-                                                    // handleChange(value);    // Effectuer des actions supplémentaires
+                                                    handleChange(value);    // Effectuer des actions supplémentaires
                                                 }}
                                             >
                                                 <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
                                                     <SelectValue placeholder="Sélectionner une compagne" />
                                                 </SelectTrigger>
                                                 <SelectContent className="w-full">
-                                                    <SelectItem value="E-suuq">E-suuq</SelectItem>
-                                                    <SelectItem value="Recouvrement">Recouvrement</SelectItem>
-                                                    <SelectItem value="Petite paquet">Petite paquet</SelectItem>
-                                                    <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                                    {selectCompagner && selectCompagner.length > 0 ? (
+                                                        selectCompagner.map((items, index) => (
+                                                            <SelectItem value={items.Nom} key={index}>
+                                                                {items.Nom}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                    )}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>

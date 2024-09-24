@@ -30,6 +30,7 @@ import { FormError } from "../FormError";
 import { Button } from "../ui/button";
 import { FormSucces } from "../FormSucces";
 import { Rappel, RappelColumn } from "./RappelColumn";
+import { useSession } from "next-auth/react";
 
 interface TitleProps {
     title: string;
@@ -42,6 +43,8 @@ export default function Content({ title }: TitleProps) {
     const [livraisonData, setLivraisonData] = useState<Livraison[]>([]);
     const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+    const [selectCompagner, setselectCompagner] = useState([]);
+    const { data: session, status } = useSession();
 
     const [DataRapel, setDataRapel] = useState<Rappel[]>([])
 
@@ -52,10 +55,44 @@ export default function Content({ title }: TitleProps) {
         }
     }, [title]);
 
+    //Fetch compagnes logic here...
+    const fetchCompagner = async () => {
+        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+
+        try {
+            const response = await fetch(apiUrl, { method: 'GET' });
+
+            // Vérification de la réponse
+            if (!response.ok) {
+                console.error("Erreur lors de l'exécution de la requête.");
+                return;
+            }
+
+            const responseData = await response.json();
+
+            // Vérification des erreurs dans la réponse
+            if (responseData.error) {
+                console.error("Erreur du serveur:", responseData.error);
+                return;
+            }
+
+            // Mettre à jour l'état avec les données récupérées
+            setselectCompagner(responseData);
+
+        } catch (error) {
+            console.error("Erreur lors de la récupération des campagnes:", error);
+        }
+    };
+
     // Utilisation de useEffect pour déclencher la récupération des contacts à chaque changement de titre
     useEffect(() => {
         fetchContacts();
     }, [fetchContacts]);
+
+    useEffect(() => {
+        fetchCompagner();
+    }, []);
+
     // controle de formulaire d'ajouter une demande livraison
     const form = useForm<z.infer<typeof DemandeLivraison>>({
         resolver: zodResolver(DemandeLivraison),
@@ -77,7 +114,8 @@ export default function Content({ title }: TitleProps) {
     //fontion pour ajouter une demande livraison.
     const onSubmits = (values: z.infer<typeof DemandeLivraison>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterDemande&id=1`;
+            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterDemande&id=${session?.user?.id}`;
+            console.log(session?.user?.id);
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -120,7 +158,7 @@ export default function Content({ title }: TitleProps) {
         const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherParCompagne`;
         try {
             const playload = {
-                Compagne : data
+                Compagne: data
             }
             const response = await fetch(apiUrl, {
                 method: "POST",
@@ -193,10 +231,15 @@ export default function Content({ title }: TitleProps) {
                                                                             <SelectValue placeholder="Sélectionner une compagne" />
                                                                         </SelectTrigger>
                                                                         <SelectContent>
-                                                                            <SelectItem value="E-suuq">E-suuq</SelectItem>
-                                                                            <SelectItem value="Recouvrement">Recouvrement</SelectItem>
-                                                                            <SelectItem value="Petite paquet">Petite paquet</SelectItem>
-                                                                            <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                                                            {selectCompagner && selectCompagner.length > 0 ? (
+                                                                                selectCompagner.map((items, index) => (
+                                                                                    <SelectItem value={items.Nom} key={index}>
+                                                                                        {items.Nom}
+                                                                                    </SelectItem>
+                                                                                ))
+                                                                            ) : (
+                                                                                <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                                            )}
                                                                         </SelectContent>
                                                                     </Select>
                                                                 </FormControl>
@@ -324,10 +367,15 @@ export default function Content({ title }: TitleProps) {
                                                     <SelectValue placeholder="Sélectionner une compagne" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="E-suuq">E-suuq</SelectItem>
-                                                    <SelectItem value="Recouvrement">Recouvrement</SelectItem>
-                                                    <SelectItem value="Petite paquet">Petite paquet</SelectItem>
-                                                    <SelectItem value="Colis-Ems">Colis Ems</SelectItem>
+                                                    {selectCompagner && selectCompagner.length > 0 ? (
+                                                        selectCompagner.map((items, index) => (
+                                                            <SelectItem value={items.Nom} key={index}>
+                                                                {items.Nom}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                    )}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>

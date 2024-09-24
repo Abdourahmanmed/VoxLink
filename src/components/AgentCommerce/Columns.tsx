@@ -21,6 +21,8 @@ export type User = {
     id: string
     Nom: string
     Telephone: number
+    Qualification:string 
+    Commentaire: string
 }
 
 export const Columns: ColumnDef<User>[] = [
@@ -65,7 +67,12 @@ export const Columns: ColumnDef<User>[] = [
         header: "Telephone",
     },
     {
-        id: "actions",
-        header: "Actions",
+        accessorKey: "Qualification",
+        header: "Qualification",
     },
+    {
+        accessorKey: "Commentaire",
+        header: "Commentaire",
+    },
+    
 ]

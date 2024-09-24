@@ -8,6 +8,7 @@ import { title } from 'process';
 import { CompagneData } from '@/components/Superviseur/Culumns/CulumnsCompagner';
 import { ImportedData } from '../Superviseur/Culumns/CulumnsDataImported';
 import { Agents } from '../Superviseur/Culumns/CulumnsAgents';
+import { useSession } from 'next-auth/react';
 
 // Définir le type pour le contexte
 interface AppContextType {
@@ -48,6 +49,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [CompaData, SetCompaData] = useState<CompagneData[]>([]); // c'est le gestion de data des compagnes .
     const [ContactData, setContactData] = useState<ImportedData[]>([]);
     const [UsersData, SetUsersData] = useState<Agents[]>([]);
+    const { data: session, status } = useSession();
 
     const contacts = async (title: string) => {
         const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil`;
@@ -125,7 +127,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Ajouter une compagne
     const onSubmitCompagne = async (values: z.infer<typeof CompagneSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterCompagne&id=2`;
+            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterCompagne&id=${session?.user?.id}`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -343,7 +345,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             qualifier: values.qualifier,
             commentaire: values.commentaire,
             id_contact: id,
-            id_teleconseil: "1",
+            id_teleconseil: session?.user?.id
         };
 
         startTransition(async () => {

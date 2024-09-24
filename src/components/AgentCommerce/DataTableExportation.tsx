@@ -36,6 +36,7 @@ import {
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { FileUp } from 'lucide-react';
+import * as XLSX from "xlsx";  // Importer la librairie SheetJS
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -77,6 +78,28 @@ export function DataTableExportattion<TData, TValue>({
         },
     })
 
+    // Fonction d'exportation des données en Excel
+    const exportToExcel = () => {
+        // Récupérer les données visibles dans le tableau
+        const exportData = table.getRowModel().rows.map((row) =>
+            row.getVisibleCells().reduce((acc, cell) => {
+                acc[cell.column.id] = cell.getContext().getValue(); // Accumule les données dans un objet
+                return acc;
+            }, {} as { [key: string]: any })
+        );
+
+        // Créer un nouveau classeur (workbook)
+        const wb = XLSX.utils.book_new();
+
+        // Convertir les données en feuille de calcul (worksheet)
+        const ws = XLSX.utils.json_to_sheet(exportData);
+
+        // Ajouter la feuille au classeur
+        XLSX.utils.book_append_sheet(wb, ws, "Status des appelles");
+
+        // Exporter le fichier Excel
+        XLSX.writeFile(wb, "Status_des_appelles.xlsx");
+    };
 
     return (
         <>
@@ -90,7 +113,10 @@ export function DataTableExportattion<TData, TValue>({
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />
-                <button className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex flex-1 justify-center items-center space-x-2 rounded-lg inline-block">
+                <button
+                    className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex flex-1 justify-center items-center space-x-2 rounded-lg inline-block"
+                    onClick={exportToExcel}  // Action d'exportation sur clic
+                >
                     <FileUp className="" />
                     <span>Exportation</span>
                 </button>

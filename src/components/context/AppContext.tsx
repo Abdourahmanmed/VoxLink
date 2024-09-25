@@ -52,37 +52,38 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const { data: session, status } = useSession();
 
     const contacts = async (title: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil`;
-        try {
-            setLoading(true); // Activation de l'indicateur de chargement
-            const payload = {
-                Nom: title
-            };
+            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil&id=${session?.user?.id}`;
+            console.log(session?.user?.id);
+            try {
+                setLoading(true); // Activation de l'indicateur de chargement
+                const payload = {
+                    Nom: title
+                };
+                console.log(title);
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
 
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
+                if (!response.ok) {
+                    throw new Error("Erreur réseau détectée");
+                }
 
-            if (!response.ok) {
-                throw new Error("Erreur réseau détectée");
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                } else {
+                    setData(responseData);
+                    console.log(responseData[0]?.Script);
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'enregistrement des données:", error);
+            } finally {
+                setLoading(false); // Désactivation de l'indicateur de chargement
             }
-
-            const responseData = await response.json();
-            if (responseData.error) {
-                console.log(responseData.error);
-            } else {
-                setData(responseData);
-                console.log(responseData[0]?.Script);
-            }
-        } catch (error) {
-            console.error("Erreur lors de l'enregistrement des données:", error);
-        } finally {
-            setLoading(false); // Désactivation de l'indicateur de chargement
-        }
     };
     // Ajouter utilisateur
     const onSubmitUtilisateur = async (values: z.infer<typeof RegisterSchema>) => {
@@ -372,7 +373,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AppContext.Provider value={{ onSubmit, contacts, EditerCompagne,handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
+        <AppContext.Provider value={{ onSubmit, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
             {children}
         </AppContext.Provider>
     );

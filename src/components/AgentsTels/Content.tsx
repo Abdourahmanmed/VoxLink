@@ -47,7 +47,7 @@ export default function Content({ title }: TitleProps) {
     const { data: session, status } = useSession();
 
     const [DataRapel, setDataRapel] = useState<Rappel[]>([])
-
+    // console.log(session?.user);
     // Fonction pour récupérer les données de contacts
     const fetchContacts = useCallback(() => {
         if (contacts && typeof contacts === "function") {
@@ -57,7 +57,7 @@ export default function Content({ title }: TitleProps) {
 
     //Fetch compagnes logic here...
     const fetchCompagner = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
 
         try {
             const response = await fetch(apiUrl, { method: 'GET' });
@@ -114,8 +114,8 @@ export default function Content({ title }: TitleProps) {
     //fontion pour ajouter une demande livraison.
     const onSubmits = (values: z.infer<typeof DemandeLivraison>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterDemande&id=${session?.user?.id}`;
-            console.log(session?.user?.id);
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterDemande&id=${session?.user?.id}`;
+            // console.log(session?.user?.id);
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -137,7 +137,7 @@ export default function Content({ title }: TitleProps) {
     };
     //fonction de recuperer tous les demandes de livraison.
     const fetchDemandeLivraison = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DemandeLivraison`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DemandeLivraison`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -155,7 +155,7 @@ export default function Content({ title }: TitleProps) {
 
     // Fonction pour récupérer tous les contacts à rappeler par campagne
     const fetchRapeller = async (data: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherParCompagne`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherParCompagne`;
         try {
             const playload = {
                 Compagne: data

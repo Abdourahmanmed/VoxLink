@@ -42,7 +42,7 @@ export default function ContentCommerce() {
     
     //Fetch compagnes logic here...
     const fetchCompagner = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
 
         try {
             const response = await fetch(apiUrl, { method: 'GET' });
@@ -76,7 +76,7 @@ export default function ContentCommerce() {
 
     //fonction pour gerer
     const fetchDemandeLivraison = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DemandeLivraison`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DemandeLivraison`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -92,7 +92,7 @@ export default function ContentCommerce() {
         }
     }
     const fetchContactQualifier = async (value: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherRapel`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherRapel`;
         try {
             const playload = {
                 Compagne: value,

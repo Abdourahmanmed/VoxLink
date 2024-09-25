@@ -52,14 +52,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const { data: session, status } = useSession();
 
     const contacts = async (title: string) => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil&id=${session?.user?.id}`;
-            console.log(session?.user?.id);
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=ContactsTEleconseil&id=${session?.user?.id}`;
+            // console.log(session?.user);
             try {
                 setLoading(true); // Activation de l'indicateur de chargement
                 const payload = {
                     Nom: title
                 };
-                console.log(title);
+                // console.log(title);
                 const response = await fetch(apiUrl, {
                     method: "POST",
                     headers: {
@@ -88,7 +88,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Ajouter utilisateur
     const onSubmitUtilisateur = async (values: z.infer<typeof RegisterSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterUser`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterUser`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -128,7 +128,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Ajouter une compagne
     const onSubmitCompagne = async (values: z.infer<typeof CompagneSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterCompagne&id=${session?.user?.id}`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterCompagne&id=${session?.user?.id}`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -165,7 +165,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // supprime une utilisateur
     const handleDeleteUser = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
         event.preventDefault(); // Empêche la soumission par défaut du formulaire
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=SuprimerUser&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=SuprimerUser&id=${id}`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -189,7 +189,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // supprime une compagne
     const handleDelete = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
         event.preventDefault(); // Empêche la soumission par défaut du formulaire
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DeleteCompagne&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DeleteCompagne&id=${id}`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -212,7 +212,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     // Fonction pour éditer une compagne
     const EditerCompagne = async (values: z.infer<typeof CompagneSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerCompagne&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerCompagne&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -252,7 +252,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     //fonction pour éditer un conctact
     const EditerContact = async (values: z.infer<typeof ContactShema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerUnContact&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerUnContact&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -292,7 +292,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     //fonction pour éditer un utilisateur
     const EditerUser = async (values: z.infer<typeof RegisterSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerUnUser&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerUnUser&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -341,7 +341,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     //poure la qualification et gestion des appelles .
     const onSubmit = async (values: z.infer<typeof qualificationSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Appel`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Appel`;
         const payload = {
             qualifier: values.qualifier,
             commentaire: values.commentaire,

@@ -38,7 +38,7 @@ export default function Affectation() {
 
     // Fetch agents  logic here...
     const fetchAgents = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherPourSuperviseurTele`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherPourSuperviseurTele`;
         try {
             const response = await fetch(apiUrl, { method: 'GET' });
 
@@ -62,7 +62,7 @@ export default function Affectation() {
 
     // Fetch contacts logic here...
     const fetchContacts = async (value) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherContactAujourdhui`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherContactAujourdhui`;
         try {
             const playload = {
                 Compagne: value
@@ -90,7 +90,7 @@ export default function Affectation() {
 
     //Fetch compagnes logic here...
     const fetchCompagner = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
 
         try {
             const response = await fetch(apiUrl, { method: 'GET' });
@@ -136,7 +136,7 @@ export default function Affectation() {
     // Gestion de la soumission du formulaire
     const onSubmit = (values: z.infer<typeof affectationSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Affectation`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Affectation`;
             try {
                 // Envoi de la requête POST avec les données du formulaire
                 const response = await fetch(apiUrl, {

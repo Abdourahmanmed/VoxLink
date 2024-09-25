@@ -12,7 +12,7 @@ export default function CrudCompagner() {
     const {CompaData, SetCompaData,onSubmitCompagne, successMessage, errorMessage,setSuccessMessage,setErrorMessage, } = useAppContext();
     // Récupérer les compagnes
     const fetchCompagne = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",

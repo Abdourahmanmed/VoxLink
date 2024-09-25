@@ -15,7 +15,7 @@ export const { handlers: { GET, POST }, signIn, signOut, auth } = NextAuth({
 
                     console.log(payload);
 
-                    const response = await fetch('http://127.0.0.1/Vox_Backend/api.php?method=Connexion', {
+                    const response = await fetch('http://192.168.100.4:8080/Vox_Backend//api.php?method=Connexion', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

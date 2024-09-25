@@ -13,7 +13,7 @@ export default function CrudAgent() {
     //comportement
     //fonction qui permet de recupere les status des apples surtout les appelle positves 
     const FetchStatus = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherPourSuperviseur`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherPourSuperviseur`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",

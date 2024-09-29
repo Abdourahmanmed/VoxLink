@@ -87,16 +87,6 @@ export const ContactShema = z.object({
     Nationalite: z.string().min(1, "Nationalite est obligatoire."),
 })
 
-
-// Schéma de validation avec Zod
-export const FormSchema = z.object({
-    Compagne: z.string().nonempty("Veuillez sélectionner une compagne"),  // Validation pour le champ 'Compagne'
-    file: z.instanceof(File).nullable().refine((file) => file !== null, {
-      message: "Veuillez importer un fichier",
-    }),
-  });
-  
-
 // Schéma de validation avec Zod
 export const FormSchema = z.object({
     Compagne: z.string().nonempty("Veuillez sélectionner une compagne"),  // Validation pour le champ 'Compagne'

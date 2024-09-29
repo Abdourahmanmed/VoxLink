@@ -127,7 +127,7 @@ export default function CreateUser({ onSubmit,successMessage,errorMessage }: Cre
                                             }}
                                         >
                                             <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
-                                                <SelectValue placeholder="Sélectionner une compagne" />
+                                                <SelectValue placeholder="Sélectionner Un Role" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="Teleconseiller">Teleconseiller</SelectItem>

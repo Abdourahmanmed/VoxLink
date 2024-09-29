@@ -25,8 +25,8 @@ export default function ContentCommerce() {
     const [DemandeLivraison, setDemandeLivraison] = useState<DemandeLivraison[]>([])
     const [ListeContact, setListeContact] = useState<User[]>([]);
     const [selectCompagner, setselectCompagner] = useState([]);
-    const [ErroMessage,SetErroMessage] = useState<string>();
-    const [SuccesMessage,SetSuccesMessage] = useState<string>();
+    const [ErroMessage, SetErroMessage] = useState<string>();
+    const [SuccesMessage, SetSuccesMessage] = useState<string>();
 
 
     const selcte = useForm<z.infer<typeof FormSchema>>({
@@ -122,38 +122,90 @@ export default function ContentCommerce() {
             console.error("Erreur de requête", error);
         }
     }
+    // les en tete pour verifier la bonne fichier excel.
+    const expectedHeaders = [
+        'Nom',
+        'Email',
+        'Telephone',
+        'Adresse',
+        'Provenance',
+        'Nombre_colis',
+        'Poids',
+        'Frais_postaux',
+        'Frais_Douane',
+        'Reference',
+        'Date_abonnement',
+        'Nationaliter'
+    ];
 
-    // Fonction pour lire et transformer le fichier Excel en JSON
-    const readExcelFile = (file: File) => {
+    interface DataRow {
+        Nom: string;
+        Email: string;
+        Telephone: string;
+        Adresse: string;
+        Provenance: string;
+        Nombre_colis: string;
+        Poids: string;
+        Frais_postaux: string;
+        Frais_Douane: string;
+        Reference: string;
+        Date_abonnement: string;
+        Nationaliter: string;
+    }
+
+    const readExcelFile = (file: File): Promise<DataRow[]> => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
+            const reader = new FileReader(); // Initialisation du FileReader ici
 
             reader.onload = (e) => {
-                const binaryStr = e.target?.result;
+                const binaryStr = e.target?.result; // Vérification de la présence de e.target
                 const workbook = XLSX.read(binaryStr, { type: 'binary' });
 
                 const sheetName = workbook.SheetNames[0]; // Récupère la première feuille
                 const sheet = workbook.Sheets[sheetName];
 
-                // Convertir la feuille en JSON
-                const jsonData = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                // Convertir la feuille en JSON avec des valeurs par défaut pour les cellules vides
+                const jsonData: DataRow[] = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
+                // Récupérer les en-têtes du fichier
+                const fileHeaders = Object.keys(jsonData[0]);
+
+                // Debug: Afficher les en-têtes du fichier pour voir les différences
+                // console.log("En-têtes du fichier:", fileHeaders);
+
+                // Comparer les en-têtes récupérées avec celles attendues
+                if (JSON.stringify(fileHeaders) !== JSON.stringify(expectedHeaders)) {
+                    return reject(
+                        SetErroMessage(
+                            `Les colonnes du fichier ne sont pas correctement organisées. 
+                            Voici l'organisation attendue : ${expectedHeaders.join(', ')}.`
+                        )
+                    );
+                }
+
+                // Si tout est correct, retourner les données avec les en-têtes
                 resolve(jsonData);
             };
 
             reader.onerror = (err) => {
-                reject(err);
+                reject(err); // Gestion des erreurs de lecture
             };
 
-            reader.readAsBinaryString(file);
+            reader.readAsBinaryString(file); // Lire le fichier comme une chaîne binaire
         });
     };
+
+
+
+
+
 
     const onsubmit = async (values: z.infer<typeof FormSchema>) => {
         const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=InsertDataImported&id=7`; // Correction de l'URL
         try {
             // Lire le fichier Excel et convertir en JSON
             const data = await readExcelFile(values.file);
-
+            
             // Préparation des données à envoyer
             const payload = {
                 Compagne: values.Compagne,
@@ -260,8 +312,8 @@ export default function ContentCommerce() {
                                     </FormMessage>
                                 )}
                             </div>
-                            <FormError message={ErroMessage}/>
-                            <FormSucces message={SuccesMessage}/>
+                            <FormError message={ErroMessage} />
+                            <FormSucces message={SuccesMessage} />
                             <div className="w-full flex justify-end px-2">
                                 <button
                                     type="submit"

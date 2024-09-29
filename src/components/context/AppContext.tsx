@@ -9,11 +9,10 @@ import { CompagneData } from '@/components/Superviseur/Culumns/CulumnsCompagner'
 import { ImportedData } from '../Superviseur/Culumns/CulumnsDataImported';
 import { Agents } from '../Superviseur/Culumns/CulumnsAgents';
 import { useSession } from 'next-auth/react';
-
 // Définir le type pour le contexte
 interface AppContextType {
     onSubmit: (values: z.infer<typeof qualificationSchema>, id: string) => void;
-    contacts: (title: string) => void;
+    contacts: (id: string, title: string) => void;
     successMessage?: string;
     errorMessage?: string;
     isPending: boolean;
@@ -50,48 +49,44 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [ContactData, setContactData] = useState<ImportedData[]>([]);
     const [UsersData, SetUsersData] = useState<Agents[]>([]);
     const { data: session, status } = useSession();
+    const contacts = async (id: string, title: string) => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=ContactsTEleconseil&id=${id}`;
+        // console.log(session?.user);
+        try {
+            setLoading(true); // Activation de l'indicateur de chargement
+            const payload = {
+                Nom: title
+            };
+            // console.log(title);
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
 
-    const contacts = async (title: string) => {
-        if (status != "loading") {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil&id=${session?.user?.id}`;
-            // console.log(session?.user?.id);
-            try {
-                setLoading(true); // Activation de l'indicateur de chargement
-                const payload = {
-                    Nom: title
-                };
-                console.log(title);
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                if (!response.ok) {
-                    throw new Error("Erreur réseau détectée");
-                }
-
-                const responseData = await response.json();
-                if (responseData.error) {
-                    console.log(responseData.error);
-                } else {
-                    setData(responseData);
-                    console.log(responseData[0]?.Script);
-                }
-            } catch (error) {
-                console.error("Erreur lors de l'enregistrement des données:", error);
-            } finally {
-                setLoading(false); // Désactivation de l'indicateur de chargement
+            if (!response.ok) {
+                throw new Error("Erreur réseau détectée");
             }
+
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            } else {
+                setData(responseData);
+            }
+        } catch (error) {
+            console.error("Erreur lors de l'enregistrement des données:", error);
+        } finally {
+            setLoading(false); // Désactivation de l'indicateur de chargement
         }
     };
     
     // Ajouter utilisateur
     const onSubmitUtilisateur = async (values: z.infer<typeof RegisterSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterUser`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterUser`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -131,7 +126,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Ajouter une compagne
     const onSubmitCompagne = async (values: z.infer<typeof CompagneSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterCompagne&id=${session?.user?.id}`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterCompagne&id=${session?.user?.id}`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -168,7 +163,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // supprime une utilisateur
     const handleDeleteUser = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
         event.preventDefault(); // Empêche la soumission par défaut du formulaire
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=SuprimerUser&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=SuprimerUser&id=${id}`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -192,7 +187,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // supprime une compagne
     const handleDelete = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
         event.preventDefault(); // Empêche la soumission par défaut du formulaire
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DeleteCompagne&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DeleteCompagne&id=${id}`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -215,7 +210,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     // Fonction pour éditer une compagne
     const EditerCompagne = async (values: z.infer<typeof CompagneSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerCompagne&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerCompagne&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -255,7 +250,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     //fonction pour éditer un conctact
     const EditerContact = async (values: z.infer<typeof ContactShema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerUnContact&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerUnContact&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -295,7 +290,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     //fonction pour éditer un utilisateur
     const EditerUser = async (values: z.infer<typeof RegisterSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=EditerUnUser&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=EditerUnUser&id=${id}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -342,14 +337,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-    //poure la qualification et gestion des appelles .
+    // pour la qualification et gestion des appels.
     const onSubmit = async (values: z.infer<typeof qualificationSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Appel`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=Appel`; // Correction du double slash
         const payload = {
             qualifier: values.qualifier,
             commentaire: values.commentaire,
             id_contact: id,
-            id_teleconseil: session?.user?.id
+            id_teleconseil: session?.user?.id,
         };
 
         startTransition(async () => {
@@ -368,12 +363,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     setErrorMessage(responseData.error || "Network error detected.");
                 } else {
                     setSuccessMessage(responseData.success);
+
+                    // Mettre à jour la liste des contacts pour ne plus afficher ceux qui ont été qualifiés
+                    setData((prevContacts) =>
+                        prevContacts.filter((contact) => contact.id !== id)
+                    ); // Utilisation de id directement pour filtrer
                 }
             } catch (error) {
                 setErrorMessage("Error while saving data.");
             }
         });
     };
+
 
     return (
         <AppContext.Provider value={{ onSubmit, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>

@@ -24,7 +24,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
     if (type == "Total") {
         //comportement 
         const ParJourData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParJour`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParJour`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -43,7 +43,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParSemaineData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParSemaine`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParSemaine`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -62,7 +62,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParMoisData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParMois`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParMois`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -81,7 +81,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParAnsData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParAn`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParAn`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -129,7 +129,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
     if (type == "Positive") {
         //comportement 
         const ParJourData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParJour`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParJour`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -148,7 +148,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParSemaineData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParSemaine`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParSemaine`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -167,7 +167,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParMoisData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParMois`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParMois`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -186,7 +186,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParAnsData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParAn`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParAn`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -234,7 +234,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
     if (type == "Negative") {
         //comportement 
         const ParJourData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParJour`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParJour`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -253,7 +253,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParSemaineData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParSemaine`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParSemaine`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -272,7 +272,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParMoisData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParMois`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParMois`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -291,7 +291,7 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
             }
         }
         const ParAnsData = async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParAn`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParAn`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET'

@@ -31,6 +31,7 @@ import { Button } from "../ui/button";
 import { FormSucces } from "../FormSucces";
 import { Rappel, RappelColumn } from "./RappelColumn";
 import { useSession } from "next-auth/react";
+import { useUser } from "../IdUserProviders";
 
 interface TitleProps {
     title: string;
@@ -45,19 +46,11 @@ export default function Content({ title }: TitleProps) {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const [selectCompagner, setselectCompagner] = useState([]);
     const { data: session, status } = useSession();
-
     const [DataRapel, setDataRapel] = useState<Rappel[]>([])
-
-    // Fonction pour récupérer les données de contacts
-    const fetchContacts = useCallback(() => {
-        if (contacts && typeof contacts === "function") {
-            contacts(title);
-        }
-    }, [title]);
 
     //Fetch compagnes logic here...
     const fetchCompagner = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=Compagnes`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
 
         try {
             const response = await fetch(apiUrl, { method: 'GET' });
@@ -86,8 +79,12 @@ export default function Content({ title }: TitleProps) {
 
     // Utilisation de useEffect pour déclencher la récupération des contacts à chaque changement de titre
     useEffect(() => {
-        fetchContacts();
-    }, []);
+
+        if (status === "authenticated" && session?.user?.id) {
+            // Remplacez `contacts` par votre fonction pour récupérer les contacts
+            contacts(session.user.id, title); // Assurez-vous que `title` est défini dans le composant
+        }
+    }, [status, session?.user?.id, title]);
 
     useEffect(() => {
         fetchCompagner();
@@ -114,7 +111,8 @@ export default function Content({ title }: TitleProps) {
     //fontion pour ajouter une demande livraison.
     const onSubmits = (values: z.infer<typeof DemandeLivraison>) => {
         startTransition(async () => {
-            const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterDemande&id=${session?.user?.id}`;
+
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterDemande&id=${session?.user?.id}`;
             // console.log(session?.user?.id);
             try {
                 const response = await fetch(apiUrl, {
@@ -137,7 +135,7 @@ export default function Content({ title }: TitleProps) {
     };
     //fonction de recuperer tous les demandes de livraison.
     const fetchDemandeLivraison = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=DemandeLivraison`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DemandeLivraison`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",
@@ -155,7 +153,7 @@ export default function Content({ title }: TitleProps) {
 
     // Fonction pour récupérer tous les contacts à rappeler par campagne
     const fetchRapeller = async (data: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherParCompagne`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherParCompagne&id=${session?.user?.id}`;
         try {
             const playload = {
                 Compagne: data
@@ -199,6 +197,7 @@ export default function Content({ title }: TitleProps) {
 
     return (
         <>
+
             {path === "/Teleconseiller/Demande_livraison" ? (
                 <>
                     <h1 className="capitalize p-1 text-blue font-semibold">
@@ -334,7 +333,7 @@ export default function Content({ title }: TitleProps) {
                         </Dialog>
                         {loading ? (
                             <div className="flex justify-center items-center mt-4">
-                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid border-transparent"></div>
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
                                 <small className="ml-2">Chargement...</small>
                             </div>
                         ) : (
@@ -387,7 +386,7 @@ export default function Content({ title }: TitleProps) {
 
                         {loading ? (
                             <div className="flex justify-center items-center">
-                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid border-transparent"></div>
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
                                 <small className="ml-2">Chargement...</small>
                             </div>
                         ) : (
@@ -409,7 +408,8 @@ export default function Content({ title }: TitleProps) {
                 <div className="flex gap-4">
                     <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
                         <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de contacts</h1>
-                        {status === "loading"? (
+
+                        {status === "loading" ? (
                             <div className="flex justify-center items-center">
                                 <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
                                 <small className="ml-2">Chargement...</small>
@@ -417,6 +417,7 @@ export default function Content({ title }: TitleProps) {
                         ) : (
                             <DataTable data={Data} columns={columns} typeName="Nom" />
                         )}
+
                     </div>
                     <div className="bg-white w-[50%] h-max rounded shadow-blue">
                         <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>

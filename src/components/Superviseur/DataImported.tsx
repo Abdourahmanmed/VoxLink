@@ -11,7 +11,7 @@ export default function DataImported() {
 
     //comportement
     const FetchCOntactData = async (value: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherContactAujourdhui`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherContactAujourdhui`;
         try {
             const playload = {
                 Compagne : value

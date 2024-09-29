@@ -8,7 +8,7 @@ export default function StateCAll() {
     const [StatusAppel, SetStatusAppel] = useState<Report[]>([]);
     //fonction qui permet de recupere les status des apples surtout les appelle positves 
     const FetchStatus = async (value: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherAppelPositiveParCompagne`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherAppelPositiveParCompagne`;
         try {
             const playload = {
                 Compagne: value

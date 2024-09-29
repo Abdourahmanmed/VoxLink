@@ -17,7 +17,7 @@ export default function Dashbord() {
 
     //fonction qui afficher les nombres total des appelles 
     const fetchCallTotalData = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParJour`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -37,7 +37,7 @@ export default function Dashbord() {
     }
     //fonction qui afficher les nombres total des appelles negative
     const fetchNegativeCallTotalData = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsNegativeParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParJour`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -57,7 +57,7 @@ export default function Dashbord() {
     }
     //fonction qui afficher les nombres total des appelles  positive
     const fetchPositiveCallTotalData = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=NombreAppelsPositiveParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParJour`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -78,7 +78,7 @@ export default function Dashbord() {
 
     //fonction qui afficher le 5 premier compagne
     const fetchCompagneData = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherCompagneLimiteDe5`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherCompagneLimiteDe5`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -99,7 +99,7 @@ export default function Dashbord() {
 
     //fonction qui afficher le 5 premier utilisateur 
     const fetchAgentsData = async () => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherPourSuperviseurLimit5`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherPourSuperviseurLimit5`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'

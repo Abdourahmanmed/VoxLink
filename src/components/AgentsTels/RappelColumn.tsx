@@ -80,7 +80,7 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
       });
 
       const onSubmit = async (values: z.infer<typeof qualificationSchema>, id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ModifierAppel&id=${user.id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=ModifierAppel&id=${user.id}`;
         const payload = {
           qualifier: values.qualifier,
           commentaire: values.commentaire,
@@ -110,7 +110,7 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
       };
 
       const fetchCall = async (id: string) => {
-        const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherStatusCallMessage&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherStatusCallMessage&id=${id}`;
         try {
           const response = await fetch(apiUrl, {
             method: "POST",

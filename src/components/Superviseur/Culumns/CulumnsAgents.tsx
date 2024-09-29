@@ -115,7 +115,7 @@ export const AgentsColumns: ColumnDef<Agents>[] = [
 
             //fonction pour recupere les information d'un compagne par son id 
             const fetchUser = async (id: string) => {
-                const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AfficherUserById&id=${id}`;
+                const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherUserById&id=${id}`;
                 try {
                     const response = await fetch(apiUrl, {
                         method: "GET",

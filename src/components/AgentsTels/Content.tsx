@@ -197,7 +197,6 @@ export default function Content({ title }: TitleProps) {
 
     return (
         <>
-
             {path === "/Teleconseiller/Demande_livraison" ? (
                 <>
                     <h1 className="capitalize p-1 text-blue font-semibold">
@@ -342,7 +341,7 @@ export default function Content({ title }: TitleProps) {
 
                     </div>
                 </>
-            ) : path === "/Teleconseiller/Rappels" ? (
+            ) : path === "/Teleconseiller/Status_des_appels/Rappeller" ? (
                 <div className="flex gap-4">
                     <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
                         <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de Rappels</h1>
@@ -392,6 +391,208 @@ export default function Content({ title }: TitleProps) {
                         ) : (
                             <DataTable data={DataRapel} columns={RappelColumn} typeName="Nom" />
                         )}
+                    </div>
+                    <div className="bg-white w-[50%] h-max rounded shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
+                        <div className="w-full h-full text-blue p-4">
+                            {DataRapel && DataRapel.length > 0 ? (
+                                <div>{DataRapel[0].Script}</div>
+                            ) : (
+                                <div>Il n'y a aucun contact pour le moment.</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ) : path === "/Teleconseiller/Status_des_appels/Repondu" ? (
+                <div className="flex gap-4">
+                    <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de Rappels</h1>
+                        <Form {...selcte}>
+                            <FormField
+                                control={selcte.control}
+                                name="Compagne"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-blue">Compagne</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                {...field}
+                                                onValueChange={(value) => {
+                                                    field.onChange(value);  // Mettre à jour la valeur du formulaire
+                                                    handleChange(value);    // Effectuer des actions supplémentaires
+                                                }}
+                                                disabled={isPending}
+                                            >
+                                                <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
+                                                    <SelectValue placeholder="Sélectionner une compagne" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {selectCompagner && selectCompagner.length > 0 ? (
+                                                        selectCompagner.map((items, index) => (
+                                                            <SelectItem value={items.Nom} key={index}>
+                                                                {items.Nom}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </Form>
+
+                        {loading ? (
+                            <div className="flex justify-center items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
+                                <small className="ml-2">Chargement...</small>
+                            </div>
+                        ) : (
+                            <DataTable data={DataRapel} columns={RappelColumn} typeName="Nom" />
+                        )}
+                    </div>
+                    <div className="bg-white w-[50%] h-max rounded shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
+                        <div className="w-full h-full text-blue p-4">
+                            {DataRapel && DataRapel.length > 0 ? (
+                                <div>{DataRapel[0].Script}</div>
+                            ) : (
+                                <div>Il n'y a aucun contact pour le moment.</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ) :path === "/Teleconseiller/Status_des_appels/Indisponible" ? (
+                <div className="flex gap-4">
+                    <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de Rappels</h1>
+                        <Form {...selcte}>
+                            <FormField
+                                control={selcte.control}
+                                name="Compagne"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-blue">Compagne</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                {...field}
+                                                onValueChange={(value) => {
+                                                    field.onChange(value);  // Mettre à jour la valeur du formulaire
+                                                    handleChange(value);    // Effectuer des actions supplémentaires
+                                                }}
+                                                disabled={isPending}
+                                            >
+                                                <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
+                                                    <SelectValue placeholder="Sélectionner une compagne" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {selectCompagner && selectCompagner.length > 0 ? (
+                                                        selectCompagner.map((items, index) => (
+                                                            <SelectItem value={items.Nom} key={index}>
+                                                                {items.Nom}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </Form>
+
+                        {loading ? (
+                            <div className="flex justify-center items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
+                                <small className="ml-2">Chargement...</small>
+                            </div>
+                        ) : (
+                            <DataTable data={DataRapel} columns={RappelColumn} typeName="Nom" />
+                        )}
+                    </div>
+                    <div className="bg-white w-[50%] h-max rounded shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
+                        <div className="w-full h-full text-blue p-4">
+                            {DataRapel && DataRapel.length > 0 ? (
+                                <div>{DataRapel[0].Script}</div>
+                            ) : (
+                                <div>Il n'y a aucun contact pour le moment.</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ) :path === "/Teleconseiller/Status_des_appels/Abouti" ? (
+                <div className="flex gap-4">
+                    <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de Rappels</h1>
+                        <Form {...selcte}>
+                            <FormField
+                                control={selcte.control}
+                                name="Compagne"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-blue">Compagne</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                {...field}
+                                                onValueChange={(value) => {
+                                                    field.onChange(value);  // Mettre à jour la valeur du formulaire
+                                                    handleChange(value);    // Effectuer des actions supplémentaires
+                                                }}
+                                                disabled={isPending}
+                                            >
+                                                <SelectTrigger className="shadow border border-blue rounded-[10px] w-full py-2 px-3 text-blue focus:outline-none placeholder-blue/70 caret-blue">
+                                                    <SelectValue placeholder="Sélectionner une compagne" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {selectCompagner && selectCompagner.length > 0 ? (
+                                                        selectCompagner.map((items, index) => (
+                                                            <SelectItem value={items.Nom} key={index}>
+                                                                {items.Nom}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <p>Aucune campagne disponible</p> // Message à afficher si la liste est vide
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </Form>
+
+                        {loading ? (
+                            <div className="flex justify-center items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
+                                <small className="ml-2">Chargement...</small>
+                            </div>
+                        ) : (
+                            <DataTable data={DataRapel} columns={RappelColumn} typeName="Nom" />
+                        )}
+                    </div>
+                    <div className="bg-white w-[50%] h-max rounded shadow-blue">
+                        <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
+                        <div className="w-full h-full text-blue p-4">
+                            {DataRapel && DataRapel.length > 0 ? (
+                                <div>{DataRapel[0].Script}</div>
+                            ) : (
+                                <div>Il n'y a aucun contact pour le moment.</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ) :path === "/Teleconseiller/Quick_poste" ? (
+                <div className="flex gap-4">
+                    <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
+                      
                     </div>
                     <div className="bg-white w-[50%] h-max rounded shadow-blue">
                         <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>

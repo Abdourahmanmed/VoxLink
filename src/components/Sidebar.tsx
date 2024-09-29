@@ -1,59 +1,119 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Power } from 'lucide-react';
 import { LogOutButton } from "@/actions/route";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
+// Interface pour les sous-menus
+interface SubMenuItem {
+  title: string;
+  link: string;
+}
+
+// Interface pour les éléments du menu
 interface MenuItem {
-    title: string;
-    icon: ReactNode;
-    link: string;
+  title: string;
+  icon: ReactNode;
+  link?: string;
+  Submenu?: SubMenuItem[]; // Sous-menu optionnel
 }
 
 interface SideBarProps {
-    menu: MenuItem[],
-    titre: string,
+  menu: MenuItem[];
+  titre: string;
 }
 
 export default function Sidebar({ menu, titre }: SideBarProps) {
-    const pathname = usePathname();
-    return (
-        <div className="h-screen w-60 bg-blue flex flex-col justify-between">
-            <div className="w-full">
-                {/* le logo et le titre du l'utilisateur */}
-                <h1 className="flex items-center text-blanc p-4 text-xl">
-                    <Image src="/logo.png" alt="photo" width={30} height={30} className="" />
-                    {titre}
-                </h1>
-                {/* le menu du l'utilisateur */}
-                <ul className="p-4">
-                    {menu.map((menu, index) => (
-                        <li
-                            key={index}
-                            className={`text-white flex items-center gap-x-1 cursor-pointer p-2 group hover:bg-blanc  ${pathname === menu.link ? "bg-blanc" : "bg-none"
-                                } rounded-md mt-2 w-[100%]`}
-                        >
-                            <span
-                                className={`cursor-pointer block float-left mr-2 ${pathname === menu.link ? "text-blue" : "text-white"
-                                    } duration-500 group-hover:text-blue`}
-                            >
-                                {menu.icon}
-                            </span>
-                            <a
-                                className={`lex-1 text-base  ${pathname === menu.link ? "text-blue" : "text-white"
-                                    } duration-500 group-hover:text-blue text-sm w-max`}
-                                href={menu.link}
-                            >
-                                {menu.title}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <form className="w-full p-4 " action={LogOutButton}>
-                <button type="submit" className="w-[95%] group hover:bg-blanc p-2 hover:text-blue text-white flex rounded-lg duration-500"><Power className="mr-2"/> Deconnexion</button>
-            </form>
-        </div>
-    )
+  const pathname = usePathname();
+  const [open, setOpen] = useState<string | null>(null); // État pour gérer les sous-menus ouverts
+
+  // Fonction pour basculer l'état du sous-menu
+  const toggleSubMenu = (title: string) => {
+    setOpen(open === title ? null : title);
+  };
+
+  // Fonction pour vérifier si un sous-menu est actif
+  const isSubMenuActive = (submenu: SubMenuItem[]) => {
+    return submenu.some(subItem => pathname === subItem.link);
+  };
+
+  return (
+    <div className="h-screen w-[20%] bg-blue flex flex-col justify-between">
+      <div className="w-full">
+        {/* Logo et titre */}
+        <h1 className="flex items-center text-white p-4 text-xl">
+          <Image src="/logo.png" alt="logo" width={30} height={30} />
+          {titre}
+        </h1>
+
+        {/* Menu */}
+        <ul className="p-4">
+          {menu.map((item, index) => (
+            <li key={index} className="mt-2">
+              {item.Submenu ? (
+                // Gestion des sous-menus
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div
+                      className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-md w-full transition-colors duration-300
+                        ${(open === item.title || isSubMenuActive(item.Submenu)) ? "bg-white text-blue" : "text-white"}
+                        group hover:bg-white`}
+                      onClick={() => toggleSubMenu(item.title)}
+                    >
+                      <span className={`mr-2 duration-500 group-hover:text-blue ${isSubMenuActive(item.Submenu) ? "text-blue" : "text-white"}`}>
+                        {item.icon}
+                      </span>
+                      <span className="text-sm group-hover:text-blue">{item.title}</span>
+                    </div>
+                  </DropdownMenuTrigger>
+                  {open === item.title && (
+                    <DropdownMenuContent className="w-full">
+                      {item.Submenu.map((subItem, subIndex) => (
+                        <DropdownMenuItem asChild key={subIndex}>
+                          <a
+                            href={subItem.link}
+                            className={`text-sm block w-full cursor-pointer p-2 transition-colors duration-300
+                              ${pathname === subItem.link ? "text-blue" : "text-gray-800"}
+                              hover:text-blue`}
+                          >
+                            {subItem.title}
+                          </a>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  )}
+                </DropdownMenu>
+              ) : (
+                // Élément de menu simple sans sous-menu
+                <a
+                  href={item.link}
+                  className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-md w-full transition-colors duration-300
+                    ${pathname === item.link ? "bg-white text-blue" : "text-white"}
+                    group hover:bg-white`}
+                >
+                  <span className={`mr-2 duration-500 ${pathname === item.link ? "text-blue" : "text-white"} group-hover:text-blue`}>
+                    {item.icon}
+                  </span>
+                  <span className="text-sm group-hover:text-blue">{item.title}</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Bouton de déconnexion */}
+      <form className="w-full p-4" action={LogOutButton}>
+        <button
+          type="submit"
+          className="w-[95%] group hover:bg-white p-2 text-white flex rounded-lg transition-colors duration-500"
+        >
+          <Power className="mr-2 group-hover:text-blue" />
+          <span className="group-hover:text-blue">Déconnexion</span>
+        </button>
+      </form>
+    </div>
+  );
 }

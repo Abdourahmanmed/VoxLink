@@ -62,9 +62,17 @@ export const TeleconseilRoutes = [
     "/Teleconseiller/E-suuq",
     "/Teleconseiller/Colis-Ems",
     "/Teleconseiller/Petite_paquet",
-    "/Teleconseiller/Recouvrement",
     "/Teleconseiller/Demande_livraison",
-    "/Teleconseiller/Rappels",
+    "/Teleconseiller/Recouvrement/Retard_paiement",
+    "/Teleconseiller/Recouvrement/Redevance_annee",
+    "/Teleconseiller/Recouvrement/Nouveau_Abonne",
+    "/Teleconseiller/Status_des_appels/Repondu",
+    "/Teleconseiller/Status_des_appels/Rappeller",
+    "/Teleconseiller/Status_des_appels/Indisponible",
+    "/Teleconseiller/Status_des_appels/Abouti",
+    "/Teleconseiller/Status_des_appels/Tous_les_Rappels",
+    "/Teleconseiller/Cartin",
+    "/Teleconseiller/Quick_poste",
 ];
 
 /**

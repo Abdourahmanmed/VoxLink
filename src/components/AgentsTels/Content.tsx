@@ -87,7 +87,7 @@ export default function Content({ title }: TitleProps) {
     // Utilisation de useEffect pour déclencher la récupération des contacts à chaque changement de titre
     useEffect(() => {
         fetchContacts();
-    }, [fetchContacts]);
+    }, []);
 
     useEffect(() => {
         fetchCompagner();
@@ -115,7 +115,7 @@ export default function Content({ title }: TitleProps) {
     const onSubmits = (values: z.infer<typeof DemandeLivraison>) => {
         startTransition(async () => {
             const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=AjouterDemande&id=${session?.user?.id}`;
-            console.log(session?.user?.id);
+            // console.log(session?.user?.id);
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -409,9 +409,9 @@ export default function Content({ title }: TitleProps) {
                 <div className="flex gap-4">
                     <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">
                         <h1 className="text-center capitalize p-4 text-blue font-semibold">Liste de contacts</h1>
-                        {loading ? (
+                        {status === "loading"? (
                             <div className="flex justify-center items-center">
-                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-green-500 border-solid border-transparent"></div>
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
                                 <small className="ml-2">Chargement...</small>
                             </div>
                         ) : (

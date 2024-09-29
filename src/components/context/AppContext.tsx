@@ -52,8 +52,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const { data: session, status } = useSession();
 
     const contacts = async (title: string) => {
+        if (status != "loading") {
             const apiUrl = `http://127.0.0.1/Vox_Backend/api.php?method=ContactsTEleconseil&id=${session?.user?.id}`;
-            console.log(session?.user?.id);
+            // console.log(session?.user?.id);
             try {
                 setLoading(true); // Activation de l'indicateur de chargement
                 const payload = {
@@ -84,7 +85,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             } finally {
                 setLoading(false); // Désactivation de l'indicateur de chargement
             }
+        }
     };
+    
     // Ajouter utilisateur
     const onSubmitUtilisateur = async (values: z.infer<typeof RegisterSchema>) => {
         startTransition(async () => {

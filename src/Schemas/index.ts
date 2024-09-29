@@ -89,6 +89,17 @@ export const ContactShema = z.object({
 
 
 
+// Schéma de validation avec Zod
+export const FormSchema = z.object({
+    Compagne: z.string().nonempty("Veuillez sélectionner une compagne"),  // Validation pour le champ 'Compagne'
+    file: z.instanceof(File).nullable().refine((file) => file !== null, {
+      message: "Veuillez importer un fichier",
+    }),
+  });
+  
+
+
+
 
 
 

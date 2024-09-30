@@ -14,8 +14,8 @@ const Menu = [
     {
         title: "Recouvrement", icon: <DollarSign />, Submenu: [
             { title: "Retard paiement", link: "/Teleconseiller/Recouvrement/Retard_paiement" },
-            { title: "Redevance de l'année", link: "/Teleconseiller/Recouvrement/Redevance_annee" },
-            { title: "Nouveau Abonnée", link: "/Teleconseiller/Recouvrement/Nouveau_Abonne" },
+            { title: "Redevance de l'annee", link: "/Teleconseiller/Recouvrement/Redevance_annee" },
+            { title: "Nouveau Abonnee", link: "/Teleconseiller/Recouvrement/Nouveau_Abonne" },
         ]
     },
     { title: "Demande livraison", icon: <Truck />, link: "/Teleconseiller/Demande_livraison" },

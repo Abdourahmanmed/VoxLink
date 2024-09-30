@@ -91,10 +91,19 @@ export const ContactShema = z.object({
 export const FormSchema = z.object({
     Compagne: z.string().nonempty("Veuillez sélectionner une compagne"),  // Validation pour le champ 'Compagne'
     file: z.instanceof(File).nullable().refine((file) => file !== null, {
-      message: "Veuillez importer un fichier",
+        message: "Veuillez importer un fichier",
     }),
-  });
-  
+});
+
+
+export const FormQuickPost = z.object({
+    Nom: z.string().min(1,"Le nom  est obligatoire"),
+    Telephone:  z.string().min(1,"Le Telephone  est obligatoire"),
+    Arecuperation: z.string().min(1,"Adresse de recuperation  est obligatoire"),
+    Adresse_livraison:  z.string().min(1,"Adresse de Livraison est obligatoire"),
+    Date_livraison: z.string().min(1,"La date  est obligatoire"),
+})
+
 
 
 

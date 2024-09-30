@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DatePickerDemo } from "@/components/DatePickerDemo";
 import { useSession } from "next-auth/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function QuickPostes() {
     //state
@@ -20,7 +21,6 @@ export default function QuickPostes() {
     const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const [QuickPoste, setQuickPoste] = useState<QuickLivraison[]>([]);
-    const [QuickPosteScript, setQuickPosteScript] = useState();
     const { data: session, status } = useSession();
 
     const FormPoste = useForm<z.infer<typeof FormQuickPost>>({
@@ -86,40 +86,11 @@ export default function QuickPostes() {
             console.error("Erreur lors de la récupération des campagnes:", error);
         }
     };
-    const FetchQuickPosteScript = async () => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=FetchQuickPosteScript`;
-
-        try {
-            const response = await fetch(apiUrl, { method: 'GET' });
-
-            // Vérification de la réponse
-            if (!response.ok) {
-                console.error("Erreur lors de l'exécution de la requête.");
-                return;
-            }
-
-            const responseData = await response.json();
-
-            // Vérification des erreurs dans la réponse
-            if (responseData.error) {
-                console.error("Erreur du serveur:", responseData.error);
-                return;
-            }
-
-            // Mettre à jour l'état avec les données récupérées
-            setQuickPosteScript(responseData.Script);
-
-        } catch (error) {
-            console.error("Erreur lors de la récupération des campagnes:", error);
-        }
-    };
-
     //useEffect Traitement 
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchQuickPoste();
-        FetchQuickPosteScript();
-    },[])
+    }, [])
 
 
     // Render
@@ -223,11 +194,85 @@ export default function QuickPostes() {
                         </form>
                     </Form>
                 </div>
-                <div className="bg-white w-[50%] h-max rounded shadow-blue">
+                <div className="bg-white w-[50%] h-[446px] overflow-hidden rounded shadow-blue">
                     <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
-                    <div className="w-full h-full text-blue p-4">
-                       {QuickPosteScript}
-                    </div>
+                    <ScrollArea className="w-full h-full text-blue p-4">
+                        <h4 className="font-bold mt-2">TARIFICATION DE QUICK POST PENDANT LES JOURS OUVRABLES</h4>
+
+                        <table className="table-auto w-full mt-4 mb-4">
+                            <thead>
+                                <tr>
+                                    <th className="px-4 py-2">Zone</th>
+                                    <th className="px-4 py-2">Localité</th>
+                                    <th className="px-4 py-2">Tarif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="border px-4 py-2">1</td>
+                                    <td className="border px-4 py-2">Rasdika</td>
+                                    <td className="border px-4 py-2">250 DJF</td>
+                                </tr>
+                                <tr>
+                                    <td className="border px-4 py-2">2</td>
+                                    <td className="border px-4 py-2">Quartier 1,2,3,4,5,6 et 7</td>
+                                    <td className="border px-4 py-2">350 DJF</td>
+                                </tr>
+                                <tr>
+                                    <td className="border px-4 py-2">3</td>
+                                    <td className="border px-4 py-2">Q7bis, Ambouli, Jabel, Haramous, Gabode</td>
+                                    <td className="border px-4 py-2">500 DJF</td>
+                                </tr>
+                                <tr>
+                                    <td className="border px-4 py-2">4</td>
+                                    <td className="border px-4 py-2">Cheick Moussa / Place Holl-Holl</td>
+                                    <td className="border px-4 py-2">700 DJF</td>
+                                </tr>
+                                <tr>
+                                    <td className="border px-4 py-2">5</td>
+                                    <td className="border px-4 py-2">4ème Arrondissement / Place Hayableh / Barwaqo 1</td>
+                                    <td className="border px-4 py-2">700 DJF</td>
+                                </tr>
+                                <tr>
+                                    <td className="border px-4 py-2">6</td>
+                                    <td className="border px-4 py-2">Hodan / PK12 / PK 13 / Nassib / Barwaqo 2</td>
+                                    <td className="border px-4 py-2">1250 DJF</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 className="font-bold mt-4">Frais de Livraison de 17h00 à 21h00 pour les jours ouvrables :</h4>
+                        <ul className="list-disc list-inside mt-2">
+                            <li>ZONE 1 & 2 : 500 DJF</li>
+                            <li>ZONE 3 : 750 DJF</li>
+                            <li>ZONE 4 & 5 : 1250 DJF</li>
+                            <li>ZONE 6 : 1500 DJF</li>
+                        </ul>
+
+                        <h4 className="font-bold mt-4">TARIFICATION DE QUICK POST PENDANT LES WEEKENDS</h4>
+                        <ul className="list-disc list-inside mt-2">
+                            <li>ZONE 1 & 2 : 500 DJF</li>
+                            <li>ZONE 3 : 750 DJF</li>
+                            <li>ZONE 4 & 5 : 1250 DJF</li>
+                            <li>ZONE 6 : 1500 DJF</li>
+                        </ul>
+
+                        <h4 className="font-bold mt-4">TARIFICATION DE QUICK POST POUR LES COLIS VOLUMINEUX</h4>
+                        <p>Frais de livraison de 8h00 à 17h00 pour les jours ouvrables et les weekends :</p>
+                        <ul className="list-disc list-inside mt-2">
+                            <li>ZONE 1, 2 & 3 : 1500 DJF</li>
+                            <li>ZONE 4, 5 & 6 : 3000 DJF</li>
+                        </ul>
+
+                        <p className="mt-4">Frais de livraison de 17h00 à 21h00 pour les jours ouvrables et les weekends :</p>
+                        <ul className="list-disc list-inside mt-2">
+                            <li>ZONE 1, 2 & 3 : 2000 DJF</li>
+                            <li>ZONE 4, 5 & 6 : 3500 DJF</li>
+                        </ul>
+
+                        <p className="font-bold mt-6">950 DJF</p>
+                    </ScrollArea>
+
                 </div>
             </div>
             <div className="bg-white w-[100%] h-max rounded shadow-blue p-4 mb-4">

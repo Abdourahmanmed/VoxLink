@@ -75,6 +75,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                 console.log(responseData.error);
             } else {
                 setData(responseData);
+                // console.log(responseData);
             }
         } catch (error) {
             console.error("Erreur lors de l'enregistrement des données:", error);

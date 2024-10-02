@@ -83,7 +83,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             setLoading(false); // Désactivation de l'indicateur de chargement
         }
     };
-    
+
     // Ajouter utilisateur
     const onSubmitUtilisateur = async (values: z.infer<typeof RegisterSchema>) => {
         startTransition(async () => {
@@ -340,7 +340,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     // pour la qualification et gestion des appels.
     const onSubmit = async (values: z.infer<typeof qualificationSchema>, id: string) => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=Appel`; // Correction du double slash
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=Appel`; // URL de l'API
         const payload = {
             qualifier: values.qualifier,
             commentaire: values.commentaire,
@@ -361,20 +361,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                 const responseData = await response.json();
 
                 if (!response.ok || responseData.error) {
-                    setErrorMessage(responseData.error || "Network error detected.");
+                    setErrorMessage(responseData.error || "Erreur réseau détectée.");
                 } else {
                     setSuccessMessage(responseData.success);
 
-                    // Mettre à jour la liste des contacts pour ne plus afficher ceux qui ont été qualifiés
-                    setData((prevContacts) =>
-                        prevContacts.filter((contact) => contact.id !== id)
-                    ); // Utilisation de id directement pour filtrer
+                    // Mise à jour de la liste des contacts pour supprimer toutes les informations du contact qualifié
+                    setData((prevContacts) => prevContacts.filter((contact) => contact.id !== id)); // Supprime tous les contacts correspondant à l'id
                 }
             } catch (error) {
-                setErrorMessage("Error while saving data.");
+                setErrorMessage("Erreur lors de la sauvegarde des données.");
             }
         });
     };
+
 
 
     return (

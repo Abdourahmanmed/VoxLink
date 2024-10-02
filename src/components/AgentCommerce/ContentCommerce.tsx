@@ -29,6 +29,7 @@ import { z } from "zod";
 import * as XLSX from 'xlsx'; // Importer SheetJS pour lire le fichier Excel
 import { FormError } from "../FormError";
 import { FormSucces } from "../FormSucces";
+import { DataTableExportattion } from "./DataTableExportation";
 
 export default function ContentCommerce() {
     const [fileName, setFileName] = useState("");

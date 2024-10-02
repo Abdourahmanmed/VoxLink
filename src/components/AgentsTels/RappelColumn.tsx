@@ -24,6 +24,9 @@ export type Rappel = {
   id: string;
   Nom: string;
   Telephone: number;
+  Nombre_colis: string;
+  Poids: string;
+  Frais_Postaux: string,
   Script: string;
 };
 
@@ -61,6 +64,18 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
   {
     accessorKey: "Telephone",
     header: "Telephone",
+  },
+  {
+    accessorKey: "Nombre_colis",
+    header: "Nombre colis",
+  },
+  {
+    accessorKey: "Poids",
+    header: "Poid",
+  },
+  {
+    accessorKey: "Frais_Postaux",
+    header: "Frais postaux",
   },
   {
     id: "actions",

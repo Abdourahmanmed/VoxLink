@@ -100,7 +100,9 @@ export const FormQuickPost = z.object({
     Nom: z.string().min(1,"Le nom  est obligatoire"),
     Telephone:  z.string().min(1,"Le Telephone  est obligatoire"),
     Arecuperation: z.string().min(1,"Adresse de recuperation  est obligatoire"),
-    Adresse_livraison:  z.string().min(1,"Adresse de Livraison est obligatoire"),
+    Adresse_livraison:  z.string().min(1,"Description du Contenu de Livraison est obligatoire"),
+    Description_du_Contenu :  z.string().min(1,"Adresse de Livraison est obligatoire"),
+    Nombre_de_Voyages  :  z.string().min(1,"Nombre de Voyages  de Livraison est obligatoire"),
     Date_livraison: z.string().min(1,"La date  est obligatoire"),
 })
 

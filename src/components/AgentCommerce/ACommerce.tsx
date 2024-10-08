@@ -9,6 +9,7 @@ const Menu = [
     { title: "Importation", icon: <LayoutDashboard  />, link: "/Commercial/importation" },
     { title: "Exportation", icon: < Users  />, link: "/Commercial/Exportation" },
     { title: "Demande livraison", icon: < Truck  />, link: "/Commercial/Demande_livraison" },
+    { title: "Quick Poste", icon: < Truck  />, link: "/Commercial/Quick_Poste" },
    
 ];
 

@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DatePickerDemo } from "@/components/DatePickerDemo";
 import { useSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function QuickPostes() {
     //state
@@ -30,12 +31,15 @@ export default function QuickPostes() {
             Telephone: "",
             Arecuperation: "",
             Adresse_livraison: "",
+            Description_du_Contenu: "",
+            Nombre_de_Voyages: "",
             Date_livraison: "",
         },
     });
 
     // Fonction pour ajouter une demande quick poste
     const onSubmitsQuick = async (values: z.infer<typeof FormQuickPost>) => {
+        // console.log(values);
         const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterQuicposte&id=${session?.user?.id}`;
         // console.log(session?.user?.id);
         try {
@@ -171,14 +175,62 @@ export default function QuickPostes() {
                             />
                             <FormField
                                 control={FormPoste.control}
+                                name="Description_du_Contenu"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="ex:Description du Contenu de livraison"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={FormPoste.control}
+                                name="Nombre_de_Voyages"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="ex: Nombre de Voyages"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={FormPoste.control}
                                 name="Date_livraison"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
                                             <DatePickerDemo
                                                 value={field.value ? new Date(field.value) : undefined}
-                                                onChange={(date) => field.onChange(date ? date.toISOString() : "")}
+                                                onChange={(date) => {
+                                                    if (date) {
+                                                        // Formater la date pour le fuseau horaire de l'Arabie Saoudite
+                                                        const saudiDate = new Date(date).toLocaleString('en-GB', {
+                                                            timeZone: 'Asia/Riyadh',
+                                                            year: 'numeric',
+                                                            month: '2-digit',
+                                                            day: '2-digit',
+                                                        }).split('/').reverse().join('-'); // Format: YYYY-MM-DD
+
+                                                        field.onChange(saudiDate);
+                                                    } else {
+                                                        field.onChange("");
+                                                    }
+                                                }}
                                             />
+
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

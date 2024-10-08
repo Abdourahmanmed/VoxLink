@@ -16,6 +16,8 @@ export type QuickLivraison = {
     Telephone: number
     Arecuperation: string
     Adresse_livraison: string
+    Nombre_de_Voyages: string
+    Description_du_Contenu: string
     Date: string
 }
 
@@ -69,6 +71,14 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
         header: "Adresse de Livraison",
     },
     {
+        accessorKey: "Description_du_Contenu",
+        header: "Description du Contenu",
+    },
+    {
+        accessorKey: "Nombre_de_Voyages",
+        header: "Nombre de Voyages",
+    },
+    {
         accessorKey: "Date_livraison",
         header: "Date",
     },
@@ -78,7 +88,7 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
         cell: ({ row }) => (
             <div className="flex gap-2">
                 {/* Add other action buttons if needed */}
-               ...
+                ...
             </div>
         ),
     },

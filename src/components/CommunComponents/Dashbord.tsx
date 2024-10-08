@@ -17,7 +17,7 @@ export default function Dashbord() {
 
     //fonction qui afficher les nombres total des appelles 
     const fetchCallTotalData = async () => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsParAn`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -29,7 +29,7 @@ export default function Dashbord() {
             if (responseData.error) {
                 console.log(responseData.error);
             }
-            SetCallTotalData(responseData.total_appels_jour);
+            SetCallTotalData(responseData.total_appels_an);
 
         } catch (error) {
             console.log(error);
@@ -37,7 +37,7 @@ export default function Dashbord() {
     }
     //fonction qui afficher les nombres total des appelles negative
     const fetchNegativeCallTotalData = async () => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsNegativeParAn`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -49,7 +49,7 @@ export default function Dashbord() {
             if (responseData.error) {
                 console.log(responseData.error);
             }
-            SetNegativeCallTotalData(responseData.total_appels_negative_jour);
+            SetNegativeCallTotalData(responseData.total_appels_negative_an);
 
         } catch (error) {
             console.log(error);
@@ -57,7 +57,7 @@ export default function Dashbord() {
     }
     //fonction qui afficher les nombres total des appelles  positive
     const fetchPositiveCallTotalData = async () => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParJour`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreAppelsPositiveParAn`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET'
@@ -69,7 +69,7 @@ export default function Dashbord() {
             if (responseData.error) {
                 console.log(responseData.error);
             }
-            SetPositiveCallTotalData(responseData.total_appels_positive_jour);
+            SetPositiveCallTotalData(responseData.total_appels_positive_an);
 
         } catch (error) {
             console.log(error);

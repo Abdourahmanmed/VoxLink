@@ -6,6 +6,7 @@ import DataImported from "./DataImported";
 import StateCAll from "./StateCall";
 import Reporte from "./Report";
 import CrudCompagner from "../CommunComponents/CrudCompagner";
+import Reacffectation from "./Reacffectation";
 
 export default function SupContent() {
     const path = usePathname();
@@ -19,6 +20,10 @@ export default function SupContent() {
             {/* // le affectation */}
             {path && path === "/Superviseur/Affectation" && (
                 <Affectation />
+            )}
+            {/* // le Reaffectation */}
+            {path && path === "/Superviseur/ReAffectation" && (
+                <Reacffectation />
             )}
 
             {/* //agents */}

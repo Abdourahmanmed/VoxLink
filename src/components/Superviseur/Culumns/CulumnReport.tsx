@@ -19,9 +19,12 @@ import {
 export type Report = {
     id: string;
     Nom: string;
-    Email: string;
     Telephone: number;
     Adresse: string;
+    Nombre_colis: string;
+    Poids: string;
+    Frais_Postaux: string;
+    Frais_Douane: string;
     Status: string;
     Commentaire: string;
 };
@@ -64,16 +67,28 @@ export const ReportColumns: ColumnDef<Report>[] = [
         },
     },
     {
-        accessorKey: "Email",
-        header: "Email",
-    },
-    {
         accessorKey: "Telephone",
         header: "Telephone",
     },
     {
         accessorKey: "Adresse",
         header: "Adresse",
+    },
+    {
+        accessorKey: "Nombre_colis",
+        header: "Nombre colis ",
+    },
+    {
+        accessorKey: "Poids",
+        header: "Poids ",
+    },
+    {
+        accessorKey: "Frais_Postaux",
+        header: "Frais postaux ",
+    },
+    {
+        accessorKey: "Frais_Douane",
+        header: "Frais Douane",
     },
     {
         accessorKey: "Qualification",

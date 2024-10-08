@@ -24,6 +24,7 @@ export default function Reporte() {
 
             if (!response.ok || responseData.error) {
                 console.log(responseData.error || "Une erreur réseau a été détectée.");
+                SetStatusAppel([]);
             } else {
                 SetStatusAppel(responseData);
             }

@@ -49,8 +49,9 @@ export const SuperviseurRoutes = [
     "/Superviseur/Agents",
     "/Superviseur/Compagner",
     "/Superviseur/Donne_importer",
-    "/Superviseur/status_des_appelles", 
-    "/Superviseur/Rapport", 
+    "/Superviseur/status_des_appelles",
+    "/Superviseur/Rapport",
+    "/Superviseur/ReAffectation",
 ];
 
 /**
@@ -73,6 +74,8 @@ export const TeleconseilRoutes = [
     "/Teleconseiller/Status_des_appels/Tous_les_Rappels",
     "/Teleconseiller/Cartin",
     "/Teleconseiller/Quick_poste",
+    "/Teleconseiller/Maison_Du_citoyens",
+    "/Teleconseiller/E-suuq_Prospection",
 ];
 
 /**
@@ -83,5 +86,6 @@ export const TeleconseilRoutes = [
 export const CommercialRoutes = [
     "/Commercial/importation",
     "/Commercial/Exportation",
-    "/Commercial/Demande_livraison", 
+    "/Commercial/Demande_livraison",
+    "/Commercial/Quick_Poste",
 ];

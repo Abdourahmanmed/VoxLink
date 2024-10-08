@@ -30,6 +30,8 @@ import * as XLSX from 'xlsx'; // Importer SheetJS pour lire le fichier Excel
 import { FormError } from "../FormError";
 import { FormSucces } from "../FormSucces";
 import { DataTableExportattion } from "./DataTableExportation";
+import { QuickPostData } from "../AgentsTels/QuickPostData";
+import { QuickcolumnsCommerce, QuickLivraisonCommerce } from "./AquickColumnCommerce";
 
 export default function ContentCommerce() {
     const [fileName, setFileName] = useState("");
@@ -41,6 +43,7 @@ export default function ContentCommerce() {
     const [selectCompagner, setselectCompagner] = useState([]);
     const [ErroMessage, SetErroMessage] = useState<string>();
     const [SuccesMessage, SetSuccesMessage] = useState<string>();
+    const [QuickPoste, setQuickPoste] = useState<QuickLivraisonCommerce[]>([]);
 
 
     const selcte = useForm<z.infer<typeof FormSchema>>({
@@ -207,6 +210,34 @@ export default function ContentCommerce() {
     };
 
 
+    //fonction fetch QuickPoste 
+    const fetchQuickPoste = async () => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=afficherQuickPoste`;
+
+        try {
+            const response = await fetch(apiUrl, { method: 'GET' });
+
+            // Vérification de la réponse
+            if (!response.ok) {
+                console.error("Erreur lors de l'exécution de la requête.");
+                return;
+            }
+
+            const responseData = await response.json();
+
+            // Vérification des erreurs dans la réponse
+            if (responseData.error) {
+                console.error("Erreur du serveur:", responseData.error);
+                return;
+            }
+
+            // Mettre à jour l'état avec les données récupérées
+            setQuickPoste(responseData);
+
+        } catch (error) {
+            console.error("Erreur lors de la récupération des campagnes:", error);
+        }
+    };
 
 
 
@@ -257,6 +288,7 @@ export default function ContentCommerce() {
     useEffect(() => {
         fetchDemandeLivraison();
         fetchCompagner();
+        fetchQuickPoste();
     }, []);
 
     return (
@@ -406,6 +438,12 @@ export default function ContentCommerce() {
                         columns={DemandeColumns}
                         typeName="Nom"
                     />
+                </div>
+            )}
+
+            {path && path === "/Commercial/Quick_Poste" && (
+                <div className="bg-white w-[100%] h-max rounded shadow-blue p-4 mb-4">
+                    <QuickPostData data={QuickPoste} columns={QuickcolumnsCommerce} typeName="Nom" />
                 </div>
             )}
         </main>

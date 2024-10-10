@@ -15,13 +15,14 @@ import { DatePickerDemo } from "@/components/DatePickerDemo";
 import { useSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { useAppContext } from "@/components/context/AppContext";
 
 export default function QuickPostes() {
     //state
     const [isPending, startTransition] = useTransition();
-    const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-    const [QuickPoste, setQuickPoste] = useState<QuickLivraison[]>([]);
+    const [successMessage1, setSuccessMessage1] = useState<string | undefined>(undefined);
+    const [errorMessage1, setErrorMessage1] = useState<string | undefined>(undefined);
+    const {setQuickPoste, successMessage, errorMessage,QuickPoste, setSuccessMessage, setErrorMessage} = useAppContext();
     const { data: session, status } = useSession();
 
     const FormPoste = useForm<z.infer<typeof FormQuickPost>>({
@@ -52,10 +53,10 @@ export default function QuickPostes() {
             });
             const responseData = await response.json();
             if (response.ok) {
-                setSuccessMessage(responseData.success);
+                setSuccessMessage1(responseData.success);
                 setQuickPoste([...QuickPoste, values]);
             } else {
-                setErrorMessage(responseData.error || "Network error detected.");
+                setErrorMessage1(responseData.error || "Network error detected.");
             }
         } catch (error) {
             console.error("Erreur de requête", error);
@@ -237,8 +238,8 @@ export default function QuickPostes() {
                                 )}
                             />
                             <div className="mb-4">
-                                {successMessage && <FormSucces message={successMessage} />}
-                                {errorMessage && <FormError message={errorMessage} />}
+                                {successMessage1 && <FormSucces message={successMessage1} />}
+                                {errorMessage1 && <FormError message={errorMessage1} />}
                             </div>
                             <Button type="submit" className="w-full bg-blue" disabled={isPending}>
                                 Enregistrer

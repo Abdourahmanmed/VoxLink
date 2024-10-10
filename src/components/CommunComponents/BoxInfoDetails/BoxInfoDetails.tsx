@@ -336,5 +336,215 @@ export default function BoxInfoDetails({ title, total, color, SetCallData, type 
         )
     }
 
+    if (type == "QuickPoste") {
+        //comportement 
+        const ParJourData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreQuickPosteParJour`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_jour);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParSemaineData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreQuickPosteParSemaine`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_semaine);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParMoisData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreQuickPosteParMois`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_mois);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParAnsData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreQuickPosteParAn`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_an);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+
+        //render
+        return (
+            <div className="h-[100px] w-[300px] bg-blanc flex flex-col items-center shadow-blue">
+                <div className="p-2 flex justify-between gap-4">
+                    <h1 className="text-blue text-md font-semibold">{title}</h1>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger><EllipsisVertical className="text-blue h-[16px]" /></DropdownMenuTrigger>
+                        <DropdownMenuContent className="text-blue">
+                            <DropdownMenuLabel>Filtrage</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={ParJourData}>Par jour</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParSemaineData}>Par semaine</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParMoisData}>Par mois</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParAnsData}>Par ans</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                </div>
+                <div className="flex justify-center items-center p-2">
+                    <span className={`text-4xl text-${color}`}>{total}</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (type == "Livraison") {
+        //comportement 
+        const ParJourData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreLivraisonParJour`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_jour);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParSemaineData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreLivraisonParSemaine`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_semaine);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParMoisData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreLivraisonParMois`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_mois);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const ParAnsData = async () => {
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreLivraisonParAn`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                })
+                if (!response.ok) {
+                    console.log('Erreur d\'execurion de la requete');
+                }
+                const responseData = await response.json();
+                if (responseData.error) {
+                    console.log(responseData.error);
+                }
+                SetCallData(responseData.total_appels_an);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+
+        //render
+        return (
+            <div className="h-[100px] w-[300px] bg-blanc flex flex-col items-center shadow-blue">
+                <div className="p-2 flex justify-between gap-4">
+                    <h1 className="text-blue text-md font-semibold">{title}</h1>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger><EllipsisVertical className="text-blue h-[16px]" /></DropdownMenuTrigger>
+                        <DropdownMenuContent className="text-blue">
+                            <DropdownMenuLabel>Filtrage</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={ParJourData}>Par jour</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParSemaineData}>Par semaine</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParMoisData}>Par mois</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ParAnsData}>Par ans</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                </div>
+                <div className="flex justify-center items-center p-2">
+                    <span className={`text-4xl text-${color}`}>{total}</span>
+                </div>
+            </div>
+        )
+    }
+
 
 }

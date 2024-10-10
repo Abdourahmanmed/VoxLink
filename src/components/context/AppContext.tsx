@@ -1,6 +1,6 @@
 "use client";
 // contexts/AppContext.tsx
-import { CompagneSchema, ContactShema, qualificationSchema, RegisterSchema } from '@/Schemas';
+import { CompagneSchema, ContactShema, FormQuickPost, qualificationSchema, RegisterSchema } from '@/Schemas';
 import { createContext, useContext, useState, useTransition, ReactNode } from 'react';
 import { z } from 'zod';
 import { User } from '../AgentsTels/columns';
@@ -9,6 +9,7 @@ import { CompagneData } from '@/components/Superviseur/Culumns/CulumnsCompagner'
 import { ImportedData } from '../Superviseur/Culumns/CulumnsDataImported';
 import { Agents } from '../Superviseur/Culumns/CulumnsAgents';
 import { useSession } from 'next-auth/react';
+import { QuickLivraison } from '../AgentsTels/QuickColumns';
 // Définir le type pour le contexte
 interface AppContextType {
     onSubmit: (values: z.infer<typeof qualificationSchema>, id: string) => void;
@@ -26,13 +27,17 @@ interface AppContextType {
     setErrorMessage: (data: string) => void;
     handleDelete: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
     handleDeleteUser: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
+    handleDeleteLivraison: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
     EditerCompagne: (values: z.infer<typeof CompagneSchema>, id: string) => void;
     EditerContact: (values: z.infer<typeof ContactShema>, id: string) => void;
     ContactData: ImportedData[];
     setContactData: (data: ImportedData[]) => void;
     UsersData: Agents[],
+    QuickPoste: QuickLivraison[],
     SetUsersData: (data: Agents[]) => void;
+    setQuickPoste: (data: QuickLivraison[]) => void;
     EditerUser: (values: z.infer<typeof RegisterSchema>, id: string) => void;
+    EditerDemamnde: (values: z.infer<typeof FormQuickPost>, id: string) => void;
 
 }
 
@@ -48,6 +53,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [CompaData, SetCompaData] = useState<CompagneData[]>([]); // c'est le gestion de data des compagnes .
     const [ContactData, setContactData] = useState<ImportedData[]>([]);
     const [UsersData, SetUsersData] = useState<Agents[]>([]);
+    const [QuickPoste, setQuickPoste] = useState<QuickLivraison[]>([]);
     const { data: session, status } = useSession();
     const contacts = async (id: string, title: string) => {
         const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=ContactsTEleconseil&id=${id}`;
@@ -179,6 +185,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
                 // Met à jour la liste des compagnes en filtrant l'élément supprimé
                 SetUsersData(prevData => prevData.filter(compagne => compagne.id !== id));
+            }
+        } catch (error) {
+            console.log("Une erreur est survenue :", error);
+            setErrorMessage("Une erreur est survenue lors de la suppression de la compagne.");
+        }
+    };
+    // supprime une demande livraison
+    const handleDeleteLivraison = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
+        event.preventDefault(); // Empêche la soumission par défaut du formulaire
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=DeleteQuickPoste&id=${id}`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: "GET",
+            });
+            const responseData = await response.json();
+
+            if (!response.ok || responseData.error) {
+                console.log(responseData.error || "Une erreur réseau a été détectée.");
+                setErrorMessage(responseData.error || "Une erreur réseau a été détectée.");
+            } else {
+                setSuccessMessage(responseData.success);
+
+                // Met à jour la liste des compagnes en filtrant l'élément supprimé
+                setQuickPoste(prevData => prevData.filter(Livraison => Livraison.id !== id));
             }
         } catch (error) {
             console.log("Une erreur est survenue :", error);
@@ -332,6 +362,48 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             setErrorMessage("Une erreur est survenue lors de la modification.");
         }
     };
+    //fonction pour éditer une demande livraison
+    const EditerDemamnde = async (values: z.infer<typeof FormQuickPost>, id: string) => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=EditerQuicposte&id=${session?.user?.id}&Id_Demande=${id}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values), // Transformation des données en JSON
+            });
+
+            const responseData = await response.json(); // Transformation de la réponse en JSON
+
+            // Vérification si la réponse est réussie
+            if (!response.ok) {
+                setErrorMessage(responseData.error || "Une erreur est survenue lors de la modification.");
+                return;
+            }
+
+            // Gestion des erreurs spécifiques retournées par l'API
+            if (responseData.error) {
+                setErrorMessage(responseData.error);
+                return;
+            }
+
+            // Si la modification est réussie
+            setSuccessMessage(responseData.success || "Modification réussie.");
+
+            // Mise à jour de l'état QuickPoste avec les nouvelles valeurs modifiées
+            setQuickPoste((prevQuickPoste) =>
+                prevQuickPoste.map((Quick) =>
+                    Quick.id === id ? { ...Quick, ...values } : Quick
+                )
+            );
+        } catch (error) {
+            // Gestion des exceptions
+            console.error("Erreur lors de la modification de la demande :", error);
+            setErrorMessage("Une erreur est survenue lors de la modification.");
+        }
+    };
 
 
 
@@ -377,7 +449,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <AppContext.Provider value={{ onSubmit, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
+        <AppContext.Provider value={{ onSubmit, EditerDemamnde, handleDeleteLivraison, QuickPoste, setQuickPoste, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
             {children}
         </AppContext.Provider>
     );

@@ -174,7 +174,7 @@ export function QuickPostData<TData, TValue>({
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         className="border rounded-md p-1"
                     >
-                        {[10, 20, 30, 40, 50].map((size) => (
+                        {[10, 20, 30, 40, 50,100,500,1000].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>

@@ -4,6 +4,7 @@ import { Agents, AgentsColumns } from "../Superviseur/Culumns/CulumnsAgents";
 import { Dashbordata, DashbordColumns } from "../Superviseur/Culumns/DashCulumns";
 import { TableWithOutFilter } from "../TableWithOutFilter";
 import BoxInfoDetails from "./BoxInfoDetails/BoxInfoDetails";
+import { PieChartDonutWithText } from "../PieChart";
 
 export default function Dashbord() {
     //state 
@@ -12,6 +13,8 @@ export default function Dashbord() {
     const [CallTotalData, SetCallTotalData] = useState(0);
     const [NegativeCallTotalData, SetNegativeCallTotalData] = useState(0);
     const [PositiveCallTotalData, SetPositiveCallTotalData] = useState(0);
+    const [QuickTotalData, SetQuickTotalData] = useState(0);
+    const [LivTotalData, SetLivTotalData] = useState(0);
 
     //comportement
 
@@ -75,6 +78,46 @@ export default function Dashbord() {
             console.log(error);
         }
     }
+    //fonction qui afficher les nombres total des appelles  des quick poste 
+    const fetchNombreQuickPosteParAn = async () => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreQuickPosteParAn`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetQuickTotalData(responseData.total_appels_an);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    //fonction qui afficher les nombres total des appelles  des livraison
+    const fetchNombreLivraisonParAn = async () => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=NombreLivraisonParAn`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET'
+            })
+            if (!response.ok) {
+                console.log('Erreur d\'execurion de la requete');
+            }
+            const responseData = await response.json();
+            if (responseData.error) {
+                console.log(responseData.error);
+            }
+            SetLivTotalData(responseData.total_appels_an);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     //fonction qui afficher le 5 premier compagne
     const fetchCompagneData = async () => {
@@ -96,6 +139,8 @@ export default function Dashbord() {
             console.log(error);
         }
     }
+
+
 
     //fonction qui afficher le 5 premier utilisateur 
     const fetchAgentsData = async () => {
@@ -125,6 +170,8 @@ export default function Dashbord() {
         fetchPositiveCallTotalData();
         fetchCompagneData();
         fetchAgentsData();
+        fetchNombreQuickPosteParAn();
+        fetchNombreLivraisonParAn();
     }, [])
 
     //render
@@ -135,6 +182,8 @@ export default function Dashbord() {
                 <BoxInfoDetails title="Nombres des appelles totals" total={CallTotalData} color="blue" SetCallData={SetCallTotalData} type="Total" key={1} />
                 <BoxInfoDetails title="Nombres des appelles positive" total={PositiveCallTotalData} SetCallData={SetPositiveCallTotalData} type="Positive" color="green-500" key={2} />
                 <BoxInfoDetails title="Nombres des appelles negative" total={NegativeCallTotalData} SetCallData={SetNegativeCallTotalData} type="Negative" color="red-500" key={3} />
+                <BoxInfoDetails title="Nombre total de Quick Poste" total={QuickTotalData} SetCallData={SetQuickTotalData} type="QuickPoste" color="yellow-500" key={4} />
+                <BoxInfoDetails title="Nombre total de Livraison" total={LivTotalData} SetCallData={SetLivTotalData} type="Livraison" color="lime-500" key={4} />
             </div>
             {/* charte and table of compagne */}
             <div className="flex gap-4">
@@ -142,20 +191,22 @@ export default function Dashbord() {
                     <MyBetterChart CallTotalData={CallTotalData} PositiveCallTotalData={PositiveCallTotalData} NegativeCallTotalData={NegativeCallTotalData} />
                 </div>
                 <div className="w-2/3 py-4">
-                    <div className="bg-blanc w-full p-4 rounded-lg shadow-blue">
-                        {/* Correction: inversion des paramètres data et columns */}
-                        <h1 className="text-blue text-2xl font-semibold p-4">Le compagne</h1>
-                        <TableWithOutFilter data={CompagneData} columns={DashbordColumns} />
-                        <div className="flex justify-end py-4">
-                            <a href="/Superviseur/Compagner">
-                                <button className="text-white w-max h-max p-2 bg-blue hover:bg-blue/90 duration-500 rounded-lg ">voir plus</button>
-                            </a>
-                        </div>
-                    </div>
+                    <PieChartDonutWithText QuickTotalData={QuickTotalData} LivTotalData={LivTotalData} />
+                </div>
+            </div>
+            {/* compagner of systems*/}
+            <div className="bg-blanc w-full p-4 rounded-lg shadow-blue">
+                {/* Correction: inversion des paramètres data et columns */}
+                <h1 className="text-blue text-2xl font-semibold p-4">Le compagne</h1>
+                <TableWithOutFilter data={CompagneData} columns={DashbordColumns} />
+                <div className="flex justify-end py-4">
+                    <a href="/Superviseur/Compagner">
+                        <button className="text-white w-max h-max p-2 bg-blue hover:bg-blue/90 duration-500 rounded-lg ">voir plus</button>
+                    </a>
                 </div>
             </div>
             {/* table of users in the systhem */}
-            <div className="w-full bg-blanc shadow-blue p-2 rounded-lg">
+            <div className="w-full bg-blanc shadow-blue p-2 rounded-lg mt-8">
                 <TableWithOutFilter data={AgentsData} columns={AgentsColumns} />
                 <div className="flex justify-end py-4">
                     <a href="/Superviseur/Agents">

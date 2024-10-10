@@ -5,6 +5,7 @@ import { ReactNode, useState } from "react";
 import { Power } from 'lucide-react';
 import { LogOutButton } from "@/actions/route";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "./ui/scroll-area";
 
 // Interface pour les sous-menus
 interface SubMenuItem {
@@ -40,10 +41,10 @@ export default function Sidebar({ menu, titre }: SideBarProps) {
   };
 
   return (
-    <div className="h-screen w-[20%] bg-blue flex flex-col justify-between">
-      <div className="w-full">
+    <div className="h-screen w-[20%] bg-blue flex flex-col justify-between overflow-hidden">
+      <ScrollArea className="w-full h-full">
         {/* Logo et titre */}
-        <h1 className="flex items-center text-white p-4 text-xl">
+        <h1 className="flex items-center text-white p-4 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
           <Image src="/logo.png" alt="logo" width={30} height={30} />
           {titre}
         </h1>
@@ -102,7 +103,7 @@ export default function Sidebar({ menu, titre }: SideBarProps) {
             </li>
           ))}
         </ul>
-      </div>
+      </ScrollArea>
 
       {/* Bouton de déconnexion */}
       <form className="w-full p-4" action={LogOutButton}>

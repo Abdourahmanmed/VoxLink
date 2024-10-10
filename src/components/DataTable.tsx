@@ -163,7 +163,7 @@ export function DataTable<TData, TValue>({
             </div>
             {/* paginations */}
             <div className="flex items-center justify-end space-x-2 py-4">
-                rows per page selector
+                {/* rows per page selector */}
                 <div className="flex items-center space-x-2">
                     <label htmlFor="rows-per-page" className="text-sm">
                         Rows per page:
@@ -174,7 +174,7 @@ export function DataTable<TData, TValue>({
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         className="border rounded-md p-1"
                     >
-                        {[10, 20, 30, 40, 50].map((size) => (
+                        {[10, 20, 30, 40, 50,100,500,1000].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>

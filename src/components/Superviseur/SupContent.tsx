@@ -7,6 +7,7 @@ import StateCAll from "./StateCall";
 import Reporte from "./Report";
 import CrudCompagner from "../CommunComponents/CrudCompagner";
 import Reacffectation from "./Reacffectation";
+import SupQuickPoste from "./SupQuickPoste";
 
 export default function SupContent() {
     const path = usePathname();
@@ -50,6 +51,10 @@ export default function SupContent() {
             {/* // compagner  */}
             {path && path === "/Superviseur/Compagner" && (
                 <CrudCompagner />
+            )}
+            {/* // compagner  */}
+            {path && path === "/Superviseur/QuicPoste" && (
+                <SupQuickPoste />
             )}
         </>
     )

@@ -158,7 +158,7 @@ export function DataTableImportation<TData, TValue>({
                         control={selcte.control}
                         name="Compagne"
                         render={({ field }) => (
-                            <FormItem className="w-full">
+                            <FormItem className="w-1/2">
                                 <FormControl>
                                     <Select
                                         {...field}
@@ -189,13 +189,31 @@ export function DataTableImportation<TData, TValue>({
                     />
                 </Form>
                 {(path && (path === "/Superviseur/status_des_appelles" || path === "/Superviseur/Rapport")) ? (
-                    <button
-                        className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex justify-center items-center space-x-2 rounded-lg"
-                        onClick={exportToExcel}
-                    >
-                        <FileUp className="" />
-                        <span>Exportation</span>
-                    </button>
+                    <div className=" flex gap-8 w-full">
+                        <button
+                            className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex justify-center items-center space-x-2 rounded-lg"
+                            onClick={exportToExcel}
+                        >
+                            <FileUp className="" />
+                            <span>Exportation</span>
+                        </button>
+                        <Input
+                            placeholder="Filter Date..."
+                            value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Date_appel")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                        <Input
+                            placeholder="Filter Agent..."
+                            value={(table.getColumn("Agents")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Agents")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                    </div>
                 ) : null}
 
                 <DropdownMenu>

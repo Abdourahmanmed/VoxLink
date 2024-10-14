@@ -29,6 +29,7 @@ const Menu = [
             { title: "Indisponible", link: "/Teleconseiller/Status_des_appels/Indisponible" },
             { title: "Abouti", link: "/Teleconseiller/Status_des_appels/Abouti" },
             { title: "Tous les Rappels", link: "/Teleconseiller/Status_des_appels/Tous_les_Rappels" },
+            { title: "Tous les Indisponibles", link: "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles" },
         ]
     },
 ];

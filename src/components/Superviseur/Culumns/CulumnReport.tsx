@@ -27,6 +27,8 @@ export type Report = {
     Frais_Douane: string;
     Status: string;
     Commentaire: string;
+    Date_appel:string;
+    Agents:string;
 };
 
 export const ReportColumns: ColumnDef<Report>[] = [
@@ -97,5 +99,13 @@ export const ReportColumns: ColumnDef<Report>[] = [
     {
         accessorKey: "Commentaire",
         header: "Commentaire",
+    },
+    {
+        accessorKey: "Date_appel",
+        header: "Date D'appel",
+    },
+    {
+        accessorKey: "Agents",
+        header: "Agents",
     },
 ]

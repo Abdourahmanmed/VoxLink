@@ -168,7 +168,7 @@ const handlePrint = (data: QuickLivraisonCommerce) => {
                 <h1>Formulaire de Livraison</h1>
                 <div class="container">
                     <div class="section">
-                        <span>Numéro de Bon de livraison:</span> ${bonDeLivraisonNumber++}
+                        <span>Numéro de Bon de livraison:</span> ${data.id}
                     </div>
                     <div class="section">
                         <span>Adresse de Collecte:</span> ${data.Arecuperation}

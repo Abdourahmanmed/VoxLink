@@ -13,6 +13,7 @@ import Indisponible from "./comonents/Indisponible";
 import AboutiState from "./comonents/Abouti";
 import TousLeRappels from "./comonents/TousLesRapels";
 import QuickPostes from "./comonents/QuickPoste";
+import TousLesIndisponibles from "./comonents/TousLesInsponibles";
 
 // Titre dynamique
 interface TitleProps {
@@ -47,6 +48,8 @@ export default function Content({ title }: TitleProps) {
                 <TousLeRappels />
             ) : path === "/Teleconseiller/Quick_poste" ? (
                 <QuickPostes />
+            ) : path === "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles" ? (
+                <TousLesIndisponibles />
             ) : (
                 <div className="flex gap-4">
                     <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">

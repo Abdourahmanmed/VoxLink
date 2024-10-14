@@ -77,6 +77,7 @@ export const TeleconseilRoutes = [
     "/Teleconseiller/Quick_poste",
     "/Teleconseiller/Maison_Du_citoyens",
     "/Teleconseiller/E-suuq_Prospection",
+    "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles",
 ];
 
 /**

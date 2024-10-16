@@ -23,11 +23,13 @@ export type User = {
     id: string;
     Nom: string;
     Telephone: number;
-    Nombre_colis:string;
-    Poids:string;
-    Frais_Postaux :string,
-    Frais_Douane :string,
-    Provenance :string,
+    Nombre_colis: string;
+    Poids: string;
+    Frais_Postaux: string,
+    Frais_Douane: string,
+    Provenance: string,
+    Adresse: string,
+    Date_Abonnement: string,
     Script: string;
 };
 
@@ -79,6 +81,10 @@ export const columns: ColumnDef<User>[] = [
         header: "Provenance",
     },
     {
+        accessorKey: "Adresse",
+        header: "Adresse",
+    },
+    {
         accessorKey: "Frais_Postaux",
         header: "Frais postaux",
     },
@@ -87,12 +93,16 @@ export const columns: ColumnDef<User>[] = [
         header: "Frais Douane",
     },
     {
+        accessorKey: "Date_Abonnement",
+        header: "Date Abonnement",
+    },
+    {
         id: "actions",
         header: "Actions",
         cell: ({ row }) => {
 
             const user = row.original;
-            const { onSubmit, successMessage, errorMessage,isPending } = useAppContext();
+            const { onSubmit, successMessage, errorMessage, isPending } = useAppContext();
             const form = useForm<z.infer<typeof qualificationSchema>>({
                 resolver: zodResolver(qualificationSchema),
                 defaultValues: {

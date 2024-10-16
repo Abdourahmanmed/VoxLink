@@ -39,6 +39,8 @@ import { FileUp } from "lucide-react"
 import { usePathname } from "next/navigation"
 import * as XLSX from "xlsx"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { FormSucces } from "../FormSucces"
+import { FormError } from "../FormError"
 
 interface Agent {
     id: string;
@@ -68,6 +70,8 @@ export function DataTableReaffect<TData, TValue>({
     const [selectedCompagne, setSelectedCompagne] = useState<string>("")
     const [agents, setAgents] = useState<Agent[]>([])
     const [selectCompagner, setSelectCompagner] = useState<any[]>([]) // Utiliser un type approprié si possible
+    const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
 
     const table = useReactTable({
         data,
@@ -159,7 +163,7 @@ export function DataTableReaffect<TData, TValue>({
 
     const handleReassign = async () => {
         const selectedRowIds = getSelectedRowIds();
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Affectation`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Reaffectation`;
         try {
 
             const playload = {
@@ -185,9 +189,9 @@ export function DataTableReaffect<TData, TValue>({
             const responseData = await response.json();
 
             if (responseData.error) {
-                console.log(responseData.error);
+                setErrorMessage(responseData.error);
             } else if (responseData.success) {
-                console.log(responseData.success);
+                setSuccessMessage(responseData.success);
             }
 
         } catch (error) {
@@ -385,6 +389,8 @@ export function DataTableReaffect<TData, TValue>({
                                 </SelectItem>
                             ))}
                         </SelectContent>
+                        <FormSucces message={successMessage} />
+                        <FormError message={errorMessage} />
                     </Select>
                     <DialogFooter>
                         <Button type="button" onClick={handleReassign} className="text-white bg-blue">Réaffecter</Button>

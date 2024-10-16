@@ -29,6 +29,8 @@ export type Rappel = {
   Frais_Postaux: string,
   Frais_Douane: string,
   Provenance: string,
+  Adresse: string,
+  Date_Abonnement: string,
   Script: string;
 };
 
@@ -80,12 +82,20 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
     header: "Provenance",
   },
   {
+    accessorKey: "Adresse",
+    header: "Adresse",
+  },
+  {
     accessorKey: "Frais_Postaux",
     header: "Frais postaux",
   },
   {
     accessorKey: "Frais_Douane",
     header: "Frais Douane",
+  },
+  {
+    accessorKey: "Date_Abonnement",
+    header: "Date Abonnement",
   },
   {
     id: "actions",

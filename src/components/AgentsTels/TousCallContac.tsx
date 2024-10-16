@@ -24,6 +24,7 @@ export type TousLescontact = {
     Adresse: string;
     Status: string;
     Commentaire: string;
+    Date_appel: string;
     Agents: string;
 };
 
@@ -83,6 +84,10 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
     {
         accessorKey: "Commentaire",
         header: "Commentaire",
+    },
+    {
+        accessorKey: "Date_appel",
+        header: "Date appel",
     },
     {
         accessorKey: "Agents",

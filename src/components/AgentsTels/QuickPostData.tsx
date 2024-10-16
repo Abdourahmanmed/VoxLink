@@ -35,6 +35,7 @@ import {
 
 import { useState } from "react"
 import { toast } from "react-toastify"
+import { usePathname } from "next/navigation"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -52,6 +53,7 @@ export function QuickPostData<TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
     const [pageSize, setPageSize] = useState(10) // Nombre de lignes par page
+    const path = usePathname();
 
     const table = useReactTable({
         data,
@@ -80,12 +82,39 @@ export function QuickPostData<TData, TValue>({
     return (
         <>
             {/* column filter */}
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-8">
                 <Input
                     placeholder="Filter name..."
                     value={(table.getColumn(typeName)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(typeName)?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                />
+
+                <Input
+                    placeholder="Filter Date..."
+                    value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("Date_appel")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                />
+                {path && path === "/Commercial/Quick_Poste" && (
+                    <Input
+                        placeholder="Filter Date..."
+                        value={(table.getColumn("Date_livraison")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn("Date_livraison")?.setFilterValue(event.target.value)
+                        }
+                        className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                    />
+                )}
+                <Input
+                    placeholder="Filter By Agents..."
+                    value={(table.getColumn("Agents")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("Agents")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />
@@ -174,7 +203,7 @@ export function QuickPostData<TData, TValue>({
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         className="border rounded-md p-1"
                     >
-                        {[10, 20, 30, 40, 50,100,500,1000].map((size) => (
+                        {[10, 20, 30, 40, 50, 100, 500, 1000].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>

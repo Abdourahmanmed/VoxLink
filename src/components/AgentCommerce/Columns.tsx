@@ -23,6 +23,8 @@ export type User = {
     Telephone: number
     Qualification:string 
     Commentaire: string
+    Agents: string
+    Date: string
 }
 
 export const Columns: ColumnDef<User>[] = [
@@ -73,6 +75,14 @@ export const Columns: ColumnDef<User>[] = [
     {
         accessorKey: "Commentaire",
         header: "Commentaire",
+    },
+    {
+        accessorKey: "Date_appel",
+        header: "Date Appel",
+    },
+    {
+        accessorKey: "Agents",
+        header: "Agents",
     },
     
 ]

@@ -14,6 +14,7 @@ export type QuickLivraisonCommerce = {
     Adresse_livraison: string;
     Nombre_de_Voyages: string;
     Description_du_Contenu: string;
+    Agents: string;
     Date_livraison: string;
 };
 
@@ -80,6 +81,10 @@ export const QuickcolumnsCommerce: ColumnDef<QuickLivraisonCommerce>[] = [
     {
         accessorKey: "Date_livraison",
         header: "Date",
+    },
+    {
+        accessorKey: "Agents",
+        header: "Agents",
     },
     {
         id: "actions",

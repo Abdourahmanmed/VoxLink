@@ -27,6 +27,7 @@ export default function DataImported() {
 
             if (!response.ok || responseData.error) {
                 console.log(responseData.error || "Une erreur réseau a été détectée.");
+                setContactData([]);
             } else {
                 setContactData(responseData);
             }

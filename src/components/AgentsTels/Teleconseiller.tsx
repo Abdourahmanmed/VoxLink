@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../Sidebar";
-import { ShoppingBag, Box, DollarSign, Truck, BellPlus, PackageCheck, Mails, ClipboardPen, HousePlug } from 'lucide-react';
+import { ShoppingBag, Box, DollarSign, Truck, BellPlus, PackageCheck, Mails, ClipboardPen, HousePlug, ConciergeBell } from 'lucide-react';
 import Maincontent from "../Maincontent";
 import { usePathname } from "next/navigation";
 import Content from "./Content";
@@ -22,7 +22,7 @@ const Menu = [
     },
     { title: "Demande livraison", icon: <Truck />, link: "/Teleconseiller/Demande_livraison" },
     { title: "Quick poste", icon: <ClipboardPen />, link: "/Teleconseiller/Quick_poste" },
-    { title: "Bonne reception de la facture BP", icon: <ClipboardPen />, link: "/Teleconseiller/Bonne_reception_de_la_facture_BP" },
+    { title: "Bonne reception de la facture BP", icon: <ConciergeBell />, link: "/Teleconseiller/Bonne_reception_de_la_facture_BP" },
     {
         title: "Status des appels", icon: <BellPlus />, Submenu: [
             { title: "Repondu", link: "/Teleconseiller/Status_des_appels/Repondu" },

@@ -16,20 +16,22 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type TousLescontact = {
+export type Repartition = {
     id: string;
     Nom: string;
-    Email: string;
     Telephone: number;
     Adresse: string;
-    Status: string;
-    Commentaire: string;
-    Compagne: string;
-    Date_appel: string;
-    Agents: string;
+    Nombre_colis: string;
+    Poids: string;
+    Frais_Postaux: string;
+    Frais_Douane: string;
+    Date_affectation:string;
+    qualification:string;
+    Commentaire:string;
+    Compagne:string;
 };
 
-export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
+export const RepartitionColumns: ColumnDef<Repartition>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -67,10 +69,6 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
         },
     },
     {
-        accessorKey: "Email",
-        header: "Email",
-    },
-    {
         accessorKey: "Telephone",
         header: "Telephone",
     },
@@ -79,20 +77,32 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
         header: "Adresse",
     },
     {
-        accessorKey: "Qualification",
+        accessorKey: "Nombre_colis",
+        header: "Nombre colis ",
+    },
+    {
+        accessorKey: "Poids",
+        header: "Poids ",
+    },
+    {
+        accessorKey: "Frais_Postaux",
+        header: "Frais postaux ",
+    },
+    {
+        accessorKey: "Frais_Douane",
+        header: "Frais Douane",
+    },
+    {
+        accessorKey: "Date_affectation",
+        header: "Date affectation",
+    },
+    {
+        accessorKey: "qualification",
         header: "Status",
     },
     {
         accessorKey: "Commentaire",
         header: "Commentaire",
-    },
-    {
-        accessorKey: "Date_appel",
-        header: "Date appel",
-    },
-    {
-        accessorKey: "Agents",
-        header: "Agents",
     },
     {
         accessorKey: "Compagne",

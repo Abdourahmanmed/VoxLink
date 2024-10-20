@@ -33,6 +33,15 @@ export type ImportedData = {
     Nom: string;
     Email: string;
     Telephone: number;
+    Provenance: string;
+    Date_Enregistrement: string;
+    Nombre_colis: number;
+    Poids: string;
+    Frais_Postaux: string;
+    Frais_Douane: string;
+    Reference: string;
+    Date_Abonnement: string;
+    Nationaliter: string;
     Adresse: string;
 };
 
@@ -84,6 +93,42 @@ export const ImportedColumns: ColumnDef<ImportedData>[] = [
     {
         accessorKey: "Adresse",
         header: "Adresse",
+    },
+    {
+        accessorKey: "Provenance",
+        header: "Provenance",
+    },
+    {
+        accessorKey: "Date_Enregistrement",
+        header: "Date Enregistrement",
+    },
+    {
+        accessorKey: "Nombre_colis",
+        header: "Nombre colis",
+    },
+    {
+        accessorKey: "Poids",
+        header: "Poids",
+    },
+    {
+        accessorKey: "Reference",
+        header: "Reference",
+    },
+    {
+        accessorKey: "Frais_Postaux",
+        header: "Frais Postaux",
+    },
+    {
+        accessorKey: "Frais_Douane",
+        header: "Frais Douane",
+    },
+    {
+        accessorKey: "Date_Abonnement",
+        header: "Date Abonnement",
+    },
+    {
+        accessorKey: "Nationaliter",
+        header: "Nationaliter",
     },
     {
         id: "actions",

@@ -84,16 +84,24 @@ export function QuickPostData<TData, TValue>({
             {/* column filter */}
             <div className="flex items-center py-4 gap-8">
                 <Input
-                    placeholder="Filter name..."
+                    placeholder="Filter name contact..."
                     value={(table.getColumn(typeName)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(typeName)?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />
+                <Input
+                    placeholder="Filter By Compagne..."
+                    value={(table.getColumn("Compagne")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("Compagne")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                />
 
                 <Input
-                    placeholder="Filter Date..."
+                    placeholder="Filter By Date appel..."
                     value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("Date_appel")?.setFilterValue(event.target.value)
@@ -102,7 +110,7 @@ export function QuickPostData<TData, TValue>({
                 />
                 {path && path === "/Commercial/Quick_Poste" && (
                     <Input
-                        placeholder="Filter Date..."
+                        placeholder="Filter Date livraison..."
                         value={(table.getColumn("Date_livraison")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("Date_livraison")?.setFilterValue(event.target.value)

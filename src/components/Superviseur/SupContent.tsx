@@ -8,6 +8,7 @@ import Reporte from "./Report";
 import CrudCompagner from "../CommunComponents/CrudCompagner";
 import Reacffectation from "./Reacffectation";
 import SupQuickPoste from "./SupQuickPoste";
+import Repartition_des_contacts from "./Repartition_des_Contacts";
 
 export default function SupContent() {
     const path = usePathname();
@@ -25,6 +26,10 @@ export default function SupContent() {
             {/* // le Reaffectation */}
             {path && path === "/Superviseur/ReAffectation" && (
                 <Reacffectation />
+            )}
+            {/* // la Repartition_des_Contacts */}
+            {path && path === "/Superviseur/Repartition_des_Contacts" && (
+                <Repartition_des_contacts />
             )}
 
             {/* //agents */}

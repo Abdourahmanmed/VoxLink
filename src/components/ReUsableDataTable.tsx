@@ -188,23 +188,18 @@ export function DataTableImportation<TData, TValue>({
                         )}
                     />
                 </Form>
-                <Input
-                    placeholder="Filter Date..."
-                    value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("Date_appel")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
-                />
-
-                <Input
-                    placeholder="Filter by agents..."
-                    value={(table.getColumn("Agents")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("Agents")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
-                />
+                {(path && (path === "/Superviseur/Donne_importer")) ? (
+                    <div className=" flex gap-8 w-full">
+                        <Input
+                            placeholder="Filter By Date Enregistrement..."
+                            value={(table.getColumn("Date_Enregistrement")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Date_Enregistrement")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                    </div>
+                ) : null}
                 {(path && (path === "/Superviseur/status_des_appelles" || path === "/Superviseur/Rapport")) ? (
                     <div className=" flex gap-8 w-full">
                         <button

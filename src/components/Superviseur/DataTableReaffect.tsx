@@ -32,7 +32,7 @@ import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { SelectionCompagne } from "@/Schemas"
-import { z } from "zod"
+import { number, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { FileUp } from "lucide-react"
@@ -155,11 +155,20 @@ export function DataTableReaffect<TData, TValue>({
     }
 
     // Fonction pour récupérer l'ID des lignes sélectionnées
-    const getSelectedRowIds = () => {
-        return table.getRowModel().rows
-            .filter((row, index) => rowSelection[index]) // Vérifier la sélection avec l'indice
-            .map((row) => row.original.id);
+    // Exemple de type pour les données de la ligne
+    interface RowData {
+        id: number;
+        // autres propriétés ici si nécessaire
     }
+
+    // Fonction pour récupérer l'ID des lignes sélectionnées
+    const getSelectedRowIds = (): number[] => {
+        return table.getRowModel().rows
+            .filter((row, index) => rowSelection[index as keyof typeof rowSelection]) // Vérifier la sélection avec l'indice
+            .map((row) => (row.original as RowData).id); // Caster l'original en RowData
+    };
+
+
 
     const handleReassign = async () => {
         const selectedRowIds = getSelectedRowIds();

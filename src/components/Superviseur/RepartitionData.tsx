@@ -58,6 +58,7 @@ export function DataTableRepartition<TData, TValue>({
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+    const [pageIndex, setPageIndex] = useState(0); // Ajout de pageIndex dans l'état
 
     const table = useReactTable({
         data,
@@ -77,7 +78,7 @@ export function DataTableRepartition<TData, TValue>({
             rowSelection,
             pagination: {
                 pageSize,
-                pageIndex: 0,
+                pageIndex, // Utilisation de pageIndex depuis l'état,
             },
         },
     });
@@ -260,7 +261,10 @@ export function DataTableRepartition<TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.previousPage()}
+                        onClick={() => {
+                            setPageIndex((prev) => Math.max(prev - 1, 0));
+                            table.previousPage();
+                        }}
                         disabled={!table.getCanPreviousPage()}
                     >
                         Previous
@@ -268,7 +272,10 @@ export function DataTableRepartition<TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.nextPage()}
+                        onClick={() => {
+                            setPageIndex((prev) => prev + 1);
+                            table.nextPage();
+                        }}
                         disabled={!table.getCanNextPage()}
                     >
                         Next

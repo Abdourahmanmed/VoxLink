@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
     ColumnDef,
@@ -11,7 +11,7 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
     Table,
@@ -20,27 +20,25 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button"
-
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
-import { useState } from "react"
-import { toast } from "react-toastify"
-import { usePathname } from "next/navigation"
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-    typeName: string
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+    typeName: string;
 }
 
 export function QuickPostData<TData, TValue>({
@@ -48,11 +46,12 @@ export function QuickPostData<TData, TValue>({
     data,
     typeName,
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = useState({})
-    const [pageSize, setPageSize] = useState(10) // Nombre de lignes par page
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = useState({});
+    const [pageSize, setPageSize] = useState(10); // Nombre de lignes par page
+    const [pageIndex, setPageIndex] = useState(0); // Ajout de pageIndex dans l'état
     const path = usePathname();
 
     const table = useReactTable({
@@ -73,11 +72,10 @@ export function QuickPostData<TData, TValue>({
             rowSelection,
             pagination: {
                 pageSize,
-                pageIndex: 0,
+                pageIndex, // Utilisation de pageIndex depuis l'état
             },
         },
-    })
-
+    });
 
     return (
         <>
@@ -91,33 +89,41 @@ export function QuickPostData<TData, TValue>({
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />
-                <Input
-                    placeholder="Filter By Compagne..."
-                    value={(table.getColumn("Compagne")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("Compagne")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
-                />
+                {path &&
+                    ["/Teleconseiller/Status_des_appels/Repondu",
+                        "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles",
+                        "/Teleconseiller/Status_des_appels/Tous_les_Rappels"].includes(path) && (
+                        <>
+                            <Input
+                                placeholder="Filter By Compagne..."
+                                value={(table.getColumn("Compagne")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) =>
+                                    table.getColumn("Compagne")?.setFilterValue(event.target.value)
+                                }
+                                className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                            />
+                            <Input
+                                placeholder="Filter By Date appel..."
+                                value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) =>
+                                    table.getColumn("Date_appel")?.setFilterValue(event.target.value)
+                                }
+                                className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                            />
+                        </>
+                    )}
 
-                <Input
-                    placeholder="Filter By Date appel..."
-                    value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("Date_appel")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
-                />
-                {path && path === "/Commercial/Quick_Poste" && (
-                    <Input
-                        placeholder="Filter Date livraison..."
-                        value={(table.getColumn("Date_livraison")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("Date_livraison")?.setFilterValue(event.target.value)
-                        }
-                        className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
-                    />
-                )}
+                {path &&
+                    ["/Commercial/Quick_Poste", "/Superviseur/QuicPoste"].includes(path) && (
+                        <Input
+                            placeholder="Filter Date livraison..."
+                            value={(table.getColumn("Date_livraison")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Date_livraison")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                    )}
                 <Input
                     placeholder="Filter By Agents..."
                     value={(table.getColumn("Agents")?.getFilterValue() as string) ?? ""}
@@ -128,7 +134,7 @@ export function QuickPostData<TData, TValue>({
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button className="ml-auto bg-blue text-blanc hover:bg-blue/90 hover:text-blanc duration-500">
+                        <Button className="ml-auto bg-blue text-white hover:bg-blue/90 hover:text-white duration-500">
                             Columns
                         </Button>
                     </DropdownMenuTrigger>
@@ -136,20 +142,18 @@ export function QuickPostData<TData, TValue>({
                         {table
                             .getAllColumns()
                             .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) =>
+                                        column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                            ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -159,18 +163,16 @@ export function QuickPostData<TData, TValue>({
                     <TableHeader className="border border-blue">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id} className="border border-blue">
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id} className="border border-blue">
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -183,7 +185,10 @@ export function QuickPostData<TData, TValue>({
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id} className="border border-blue">
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -218,7 +223,7 @@ export function QuickPostData<TData, TValue>({
                         ))}
                     </select>
                 </div>
-                {/* show selected row  */}
+                {/* show selected row */}
                 <div className="flex-1 text-sm text-muted-foreground">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
                     {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -226,7 +231,10 @@ export function QuickPostData<TData, TValue>({
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => table.previousPage()}
+                    onClick={() => {
+                        setPageIndex((prev) => Math.max(prev - 1, 0));
+                        table.previousPage();
+                    }}
                     disabled={!table.getCanPreviousPage()}
                 >
                     Previous
@@ -234,12 +242,15 @@ export function QuickPostData<TData, TValue>({
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => table.nextPage()}
+                    onClick={() => {
+                        setPageIndex((prev) => prev + 1);
+                        table.nextPage();
+                    }}
                     disabled={!table.getCanNextPage()}
                 >
                     Next
                 </Button>
             </div>
         </>
-    )
+    );
 }

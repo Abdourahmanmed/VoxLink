@@ -67,6 +67,7 @@ export function ReUsableDataTableCrud<TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
     const [pageSize, setPageSize] = useState(10) // Nombre de lignes par page
+    const [pageIndex, setPageIndex] = useState(0); // Ajout de pageIndex dans l'état
 
     const table = useReactTable({
         data,
@@ -86,7 +87,7 @@ export function ReUsableDataTableCrud<TData, TValue>({
             rowSelection,
             pagination: {
                 pageSize,
-                pageIndex: 0,
+                pageIndex, // Utilisation de pageIndex depuis l'état
             },
         },
     })
@@ -215,7 +216,10 @@ export function ReUsableDataTableCrud<TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.previousPage()}
+                        onClick={() => {
+                            setPageIndex((prev) => Math.max(prev - 1, 0));
+                            table.previousPage();
+                        }}
                         disabled={!table.getCanPreviousPage()}
                     >
                         Previous
@@ -223,7 +227,10 @@ export function ReUsableDataTableCrud<TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.nextPage()}
+                        onClick={() => {
+                            setPageIndex((prev) => prev + 1);
+                            table.nextPage();
+                        }}
                         disabled={!table.getCanNextPage()}
                     >
                         Next

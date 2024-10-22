@@ -247,7 +247,7 @@ export default function QuickPostes() {
                         </form>
                     </Form>
                 </div>
-                <div className="bg-white w-[50%] h-[446px] overflow-hidden rounded shadow-blue">
+                <div className="bg-white w-[50%] h-[600px] overflow-hidden rounded shadow-blue">
                     <h1 className="text-center capitalize p-4 text-blue font-semibold">Script</h1>
                     <ScrollArea className="w-full h-full text-blue p-4">
                         <h4 className="font-bold mt-2">TARIFICATION DE QUICK POST PENDANT LES JOURS OUVRABLES</h4>

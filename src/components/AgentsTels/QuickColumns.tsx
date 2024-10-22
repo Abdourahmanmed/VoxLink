@@ -25,14 +25,15 @@ import { Textarea } from "../ui/textarea"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type QuickLivraison = {
-    id: string
-    Nom: string
-    Telephone: number
-    Arecuperation: string
-    Adresse_livraison: string
-    Nombre_de_Voyages: string
-    Description_du_Contenu: string
-    Date: string
+    id: string;
+    Nom: string;
+    Telephone: number;
+    Arecuperation: string;
+    Adresse_livraison: string;
+    Nombre_de_Voyages: string;
+    Description_du_Contenu: string;
+    Agents: string;
+    Date_livraison: string;
 }
 
 export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
@@ -69,16 +70,16 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
                     Nom
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
-            )
+            );
         },
     },
     {
         accessorKey: "Telephone",
-        header: "Telephone",
+        header: "Téléphone",
     },
     {
         accessorKey: "Arecuperation",
-        header: "Adresse de recuperation",
+        header: "Adresse de récupération",
     },
     {
         accessorKey: "Adresse_livraison",
@@ -95,6 +96,10 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
     {
         accessorKey: "Date_livraison",
         header: "Date",
+    },
+    {
+        accessorKey: "Agents",
+        header: "Agents",
     },
     {
         id: "actions",
@@ -180,6 +185,14 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
                                     onClick={() => setIsDeleteDialogOpen(true)}
                                 >
                                     Supprimer
+                                </button>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <button
+                                    className="w-full bg-slate-500 text-blanc hover:bg-slate-500/90 hover:text-blanc duration-500 rounded-lg p-1"
+                                    onClick={() => handlePrint(row.original)}
+                                >
+                                    imprimer
                                 </button>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -375,3 +388,125 @@ export const Quickcolumns: ColumnDef<QuickLivraison>[] = [
         },
     },
 ]
+
+// Print function
+const handlePrint = (data: QuickLivraison) => {
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+        printWindow.document.write(`
+        <html>
+            <head>
+                <title>Imprimer Bon de Livraison</title>
+                <style>
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        padding: 20px; 
+                        margin: 0; 
+                        position: relative; 
+                        min-height: 100vh; 
+                    }
+                    h1 { text-align: center; font-size: 1.5em; }
+                    .container { width: 80%; margin: auto; }
+                    .section { margin-bottom: 20px; }
+                    .section span { font-weight: bold; }
+                    .header-section, .footer-section { 
+                        text-align: center; 
+                        margin-bottom: 20px; 
+                        font-size: 0.9em; 
+                    }
+                    .signature { 
+                        margin-top: 50px; 
+                        text-align: left; 
+                    }
+                    .underline { 
+                        border-bottom: 1px solid black; 
+                        display: inline-block; 
+                        width: 200px; 
+                    }
+                    .flex {
+                        display:flex;
+                        justify-content:space-between;
+                    }
+                    .mt-30 {
+                        margin-top:10px;
+                    }
+                    .footer-section {
+                        position: absolute; 
+                        bottom: 150px; /* Adjust to ensure it is above the bottom edge */
+                        left: 0; 
+                        right: 0; 
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header-section flex">
+                    <div>
+                        <p>
+                            MINISTERE DE LA COMMUNICATION <br />
+                            CHARGE DES POSTES <br />
+                            ET DES TELECOMMUNICATIONS
+                        </p>
+                        <p>
+                            LA POSTE DE DJIBOUTI S.A <br />
+                            DIRECTION GENERALE <br />
+                            Djibouti le ${new Date().toLocaleDateString()}
+                        </p>
+                    </div>
+                    <div>
+                        <img src="${window.location.origin}/logo.png" alt="logo du poste" style="width: 150px; height: auto;" />
+                    </div>
+                </div>
+
+                <h1>Formulaire de Livraison</h1>
+                <div class="container">
+                    <div class="section">
+                        <span>Numéro de Bon de livraison:</span> ${data.id}
+                    </div>
+                    <div class="section">
+                        <span>Adresse de Collecte:</span> ${data.Arecuperation}
+                    </div>
+                    <div class="section">
+                        <span>Adresse de Livraison:</span> ${data.Adresse_livraison}
+                    </div>
+                    <div class="section">
+                        <span>Nom:</span> ${data.Nom}
+                    </div>
+                    <div class="section">
+                        <span>Téléphone:</span> ${data.Telephone}
+                    </div>
+                    <div class="section">
+                        <span>Description du Contenu:</span> ${data.Description_du_Contenu}
+                    </div>
+                    <div class="section">
+                        <span>Nombre de Voyages:</span> ${data.Nombre_de_Voyages}
+                    </div>
+                    <div class="section">
+                        <span>Date de Livraison:</span> ${data.Date_livraison}
+                    </div>
+                    <div class="signature">
+                        <span>Signature:</span> <span class="underline"></span>
+                    </div>
+                </div>
+
+                <div class="footer-section mt-30">
+                    <p>
+                        REPUBLIQUE DE DJIBOUTI <br />
+                        Unité – Egalité – Paix
+                    </p>
+                    <p>
+                        SIEGE SOCIAL – Bd de la République – BP 557 – République de Djibouti <br />
+                        Tél: (253) 21 35 72 73 – Fax: (253) 21 35 78 78 – E-mail: postdir@intnet.dj
+                    </p>
+                    <p>
+                        CENTRE- EINGUELA – MARABOUT – NASSER – BALBALA – ARTA – ALI-SABIEH – DIKHIL – TADJOURAH – OBOCK
+                    </p>
+                </div>
+            </body>
+        </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+    } else {
+        console.error("Unable to open print window.");
+    }
+};

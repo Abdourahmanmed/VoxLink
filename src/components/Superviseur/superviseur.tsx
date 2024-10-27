@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../Sidebar";
-import { ArrowRight, Building2, ClipboardPen, Database, FileChartColumnIncreasing, LayoutDashboard, LayoutList, Megaphone, RefreshCcw, Users, } from 'lucide-react';
+import { ArrowRight, Building2, ClipboardPen, Database, FileChartColumnIncreasing, FileX2, LayoutDashboard, LayoutList, Megaphone, RefreshCcw, Users, } from 'lucide-react';
 import Maincontent from "../Maincontent";
 import { usePathname } from "next/navigation";
 import SupContent from "./SupContent";
@@ -16,6 +16,7 @@ const Menu = [
     { title: "status des appelles", icon: <FileChartColumnIncreasing />, link: "/Superviseur/status_des_appelles" },
     { title: "Rapport", icon: <Building2 />, link: "/Superviseur/Rapport" },
     { title: "Quick Poste", icon: <ClipboardPen />, link: "/Superviseur/QuicPoste" },
+    { title: "Historique", icon: <FileX2 />, link: "/Superviseur/Historique" },
 ];
 
 export default function Superviseur() {

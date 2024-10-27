@@ -243,7 +243,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // supprime un contact
     const handleDeleteContact = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
         event.preventDefault(); // Empêche la soumission par défaut du formulaire
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=SupprimerContact&id=${id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=SupprimerContact&id=${id}&AgentsId=${session?.user?.id}`;
         try {
             const response = await fetch(apiUrl, {
                 method: "GET",

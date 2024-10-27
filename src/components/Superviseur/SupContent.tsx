@@ -61,6 +61,12 @@ export default function SupContent() {
             {path && path === "/Superviseur/QuicPoste" && (
                 <SupQuickPoste />
             )}
+            {/* // Historique  */}
+            {path && path === "/Superviseur/Historique" && (
+               <div className="flex justify-center items-center">
+                  En developement ....
+               </div>
+            )}
         </>
     )
 }

@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../Sidebar";
-import { LayoutDashboard ,  Truck,  Users , } from 'lucide-react';
+import { Database, LayoutDashboard ,  Truck,  Users , } from 'lucide-react';
 import Maincontent from "../Maincontent";
 import { usePathname } from "next/navigation";
 import ContentCommerce from "./ContentCommerce";
@@ -10,6 +10,7 @@ const Menu = [
     { title: "Exportation", icon: < Users  />, link: "/Commercial/Exportation" },
     { title: "Demande livraison", icon: < Truck  />, link: "/Commercial/Demande_livraison" },
     { title: "Quick Poste", icon: < Truck  />, link: "/Commercial/Quick_Poste" },
+    { title: "Donne importer", icon: <Database />, link: "/Commercial/Donne_importer" },
    
 ];
 

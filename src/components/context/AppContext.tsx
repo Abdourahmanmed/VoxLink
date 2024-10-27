@@ -26,6 +26,7 @@ interface AppContextType {
     setSuccessMessage: (data: string) => void;
     setErrorMessage: (data: string) => void;
     handleDelete: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
+    handleDeleteContact: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
     handleDeleteUser: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
     handleDeleteLivraison: (event: React.FormEvent<HTMLFormElement>, id: string) => void;
     EditerCompagne: (values: z.infer<typeof CompagneSchema>, id: string) => void;
@@ -233,6 +234,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
                 // Met à jour la liste des compagnes en filtrant l'élément supprimé
                 SetCompaData(prevData => prevData.filter(compagne => compagne.id !== id));
+            }
+        } catch (error) {
+            console.log("Une erreur est survenue :", error);
+            setErrorMessage("Une erreur est survenue lors de la suppression de la compagne.");
+        }
+    };
+    // supprime un contact
+    const handleDeleteContact = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
+        event.preventDefault(); // Empêche la soumission par défaut du formulaire
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=SupprimerContact&id=${id}`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: "GET",
+            });
+            const responseData = await response.json();
+
+            if (!response.ok || responseData.error) {
+                console.log(responseData.error || "Une erreur réseau a été détectée.");
+                setErrorMessage(responseData.error || "Une erreur réseau a été détectée.");
+            } else {
+                setSuccessMessage(responseData.success);
+
+                // Met à jour la liste des compagnes en filtrant l'élément supprimé
+                setContactData(prevData => prevData.filter(compagne => compagne.id !== id));
             }
         } catch (error) {
             console.log("Une erreur est survenue :", error);
@@ -449,7 +474,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <AppContext.Provider value={{ onSubmit, EditerDemamnde, handleDeleteLivraison, QuickPoste, setQuickPoste, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
+        <AppContext.Provider value={{ onSubmit, handleDeleteContact, EditerDemamnde, handleDeleteLivraison, QuickPoste, setQuickPoste, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
             {children}
         </AppContext.Provider>
     );

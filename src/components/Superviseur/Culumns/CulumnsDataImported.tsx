@@ -137,7 +137,7 @@ export const ImportedColumns: ColumnDef<ImportedData>[] = [
             const contact = row.original;
             const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
             const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-            const { handleDelete, successMessage, errorMessage, setSuccessMessage, setErrorMessage, EditerContact, isPending } = useAppContext();
+            const { handleDeleteContact, successMessage, errorMessage, setSuccessMessage, setErrorMessage, EditerContact, isPending } = useAppContext();
             const form = useForm<z.infer<typeof ContactShema>>({
                 resolver: zodResolver(ContactShema),
                 defaultValues: {
@@ -426,7 +426,7 @@ export const ImportedColumns: ColumnDef<ImportedData>[] = [
                                 <DialogDescription>
                                     <form
                                         className="w-full max-w-xs mx-auto"
-                                        onSubmit={(e) => handleDelete(e, contact.id)} // Appel de handleDelete avec id
+                                        onSubmit={(e) => handleDeleteContact(e, contact.id)} // Appel de handleDelete avec id
                                     >
                                         <FormError message={errorMessage} />
                                         <FormSucces message={successMessage} />

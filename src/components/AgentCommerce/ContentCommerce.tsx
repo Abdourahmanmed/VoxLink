@@ -32,6 +32,8 @@ import { FormSucces } from "../FormSucces";
 import { DataTableExportattion } from "./DataTableExportation";
 import { QuickPostData } from "../AgentsTels/QuickPostData";
 import { QuickcolumnsCommerce, QuickLivraisonCommerce } from "./AquickColumnCommerce";
+import { ImportedColumns } from "../Superviseur/Culumns/CulumnsDataImported";
+import { useAppContext } from "../context/AppContext";
 
 export default function ContentCommerce() {
     const [fileName, setFileName] = useState("");
@@ -44,6 +46,7 @@ export default function ContentCommerce() {
     const [ErroMessage, SetErroMessage] = useState<string>();
     const [SuccesMessage, SetSuccesMessage] = useState<string>();
     const [QuickPoste, setQuickPoste] = useState<QuickLivraisonCommerce[]>([]);
+    const { ContactData, setContactData } = useAppContext();
 
 
     const selcte = useForm<z.infer<typeof FormSchema>>({
@@ -62,6 +65,34 @@ export default function ContentCommerce() {
             setFileName("Aucun fichier sélectionné");
         }
     };
+
+
+    const FetchCOntactData = async (value: z.infer<typeof SelectionCompagne>) => {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherContactAujourdhui`;
+        try {
+            const playload = {
+                Compagne: value
+            }
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(playload),
+            })
+            const responseData = await response.json();
+
+            if (!response.ok || responseData.error) {
+                console.log(responseData.error || "Une erreur réseau a été détectée.");
+                setContactData([]);
+            } else {
+                setContactData(responseData);
+            }
+
+        } catch (error) {
+            console.log('Erreur : ', error);
+        }
+    }
 
 
 
@@ -444,6 +475,11 @@ export default function ContentCommerce() {
             {path && path === "/Commercial/Quick_Poste" && (
                 <div className="bg-white w-[100%] h-max rounded shadow-blue p-4 mb-4">
                     <QuickPostData data={QuickPoste} columns={QuickcolumnsCommerce} typeName="Nom" />
+                </div>
+            )}
+            {path && path === "/Commercial/Donne_importer" && (
+                <div className="bg-white w-[100%] h-max rounded shadow-blue p-4 mb-4">
+                    <DataTableImportation data={ContactData} columns={ImportedColumns} typeName="Nom" FetchData={FetchCOntactData} />
                 </div>
             )}
         </main>

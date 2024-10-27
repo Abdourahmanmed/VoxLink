@@ -92,4 +92,5 @@ export const CommercialRoutes = [
     "/Commercial/Exportation",
     "/Commercial/Demande_livraison",
     "/Commercial/Quick_Poste",
+    "/Commercial/Donne_importer",
 ];

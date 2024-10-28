@@ -53,6 +53,7 @@ export function DataTableLivraison<TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
     const [pageSize, setPageSize] = useState(10) // Nombre de lignes par page
+    const [pageIndex, setPageIndex] = useState(0); // Ajout de pageIndex dans l'état
 
     const table = useReactTable({
         data,
@@ -72,7 +73,7 @@ export function DataTableLivraison<TData, TValue>({
             rowSelection,
             pagination: {
                 pageSize,
-                pageIndex: 0,
+                pageIndex, // Utilisation de pageIndex depuis l'état
             },
         },
     })
@@ -163,6 +164,54 @@ export function DataTableLivraison<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
+                {/* paginations */}
+                <div className="flex items-center justify-end space-x-2 py-4 px-2">
+                    {/* rows per page selector */}
+                    <div className="flex items-center space-x-2">
+                        <label htmlFor="rows-per-page" className="text-sm">
+                            Rows per page:
+                        </label>
+                        <select
+                            id="rows-per-page"
+                            value={pageSize}
+                            onChange={(e) => setPageSize(Number(e.target.value))}
+                            className="border rounded-md p-1"
+                        >
+                            {[10, 20, 30, 40, 50, 100, 500, 10000].map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {/* show selected row  */}
+                    <div className="flex-1 text-sm text-muted-foreground">
+                        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                        {table.getFilteredRowModel().rows.length} row(s) selected.
+                    </div>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                            setPageIndex((prev) => Math.max(prev - 1, 0));
+                            table.previousPage();
+                        }}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        Previous
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                            setPageIndex((prev) => prev + 1);
+                            table.nextPage();
+                        }}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        Next
+                    </Button>
+                </div>
             </div>
         </>
     )

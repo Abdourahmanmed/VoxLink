@@ -9,6 +9,7 @@ import CrudCompagner from "../CommunComponents/CrudCompagner";
 import Reacffectation from "./Reacffectation";
 import SupQuickPoste from "./SupQuickPoste";
 import Repartition_des_contacts from "./Repartition_des_Contacts";
+import Historique from "./Historique";
 
 export default function SupContent() {
     const path = usePathname();
@@ -63,9 +64,7 @@ export default function SupContent() {
             )}
             {/* // Historique  */}
             {path && path === "/Superviseur/Historique" && (
-               <div className="flex justify-center items-center">
-                  En developement ....
-               </div>
+              <Historique />
             )}
         </>
     )

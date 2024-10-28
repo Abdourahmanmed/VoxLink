@@ -24,6 +24,9 @@ export type TousLescontact = {
     Adresse: string;
     Status: string;
     Commentaire: string;
+    Nombre_colis: string;
+    Poids: string;
+    Frais_Postaux: string;
     Compagne: string;
     Date_appel: string;
     Agents: string;
@@ -77,6 +80,18 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
     {
         accessorKey: "Adresse",
         header: "Adresse",
+    },
+    {
+        accessorKey: "Nombre_colis",
+        header: "Nombre colis",
+    },
+    {
+        accessorKey: "Poids",
+        header: "Poids",
+    },
+    {
+        accessorKey: "Frais_Postaux",
+        header: "Frais Postaux",
     },
     {
         accessorKey: "Qualification",

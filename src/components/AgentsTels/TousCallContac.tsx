@@ -224,7 +224,7 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
                     <div className="flex gap-2">
                         <Dialog key={user.id}>
                             <DialogTrigger className="w-full bg-blue text-blanc hover:bg-blue/90 hover:text-blanc duration-500 rounded-lg p-1">
-                                Qualifier
+                                Modifier
                             </DialogTrigger>
                             <DialogContent className="bg-blanc">
                                 <DialogHeader>

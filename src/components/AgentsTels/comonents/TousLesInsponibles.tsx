@@ -20,6 +20,7 @@ export default function TousLesIndisponibles() {
             if (response.ok) {
                 if (responseData) {
                     setQuickPoste(responseData);  // Utiliser un setter commençant par une minuscule
+                    // console.log(responseData);
                 } else {
                     console.error("Données reçues invalides.");
                 }

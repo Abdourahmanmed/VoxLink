@@ -162,7 +162,7 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
             // Set form default values with the fetched data
             form.setValue("qualifier", responseData.Qualification);
             form.setValue("commentaire", responseData.Commentaire);
-            console.log(responseData);
+            // console.log(responseData);
           }
         } catch (error) {
           setErrorMessage("Error fetching data.");
@@ -172,6 +172,7 @@ export const RappelColumn: ColumnDef<Rappel>[] = [
       useEffect(() => {
         if (user.id) {
           fetchCall(user.id);
+          console.log(user.id)
         }
       }, [user.id]); // Fetch data when the dialog is opened
 

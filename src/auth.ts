@@ -3,7 +3,9 @@ import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from '@/Schemas';
 
 export const { handlers: { GET, POST }, signIn, signOut, auth } = NextAuth({
-    session: { strategy: 'jwt' },
+    session: { 
+        strategy: 'jwt', 
+    },
     providers: [
         Credentials({
             async authorize(credentials) {

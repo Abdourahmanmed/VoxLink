@@ -30,6 +30,7 @@ export type User = {
     Provenance: string,
     Adresse: string,
     Date_Abonnement: string,
+    Date_Enregistrement	: string,
     Script: string;
 };
 
@@ -95,6 +96,10 @@ export const columns: ColumnDef<User>[] = [
     {
         accessorKey: "Date_Abonnement",
         header: "Date Abonnement",
+    },
+    {
+        accessorKey: "Date_Enregistrement",
+        header: "Date",
     },
     {
         id: "actions",

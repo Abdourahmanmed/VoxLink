@@ -80,12 +80,20 @@ export function DataTable<TData, TValue>({
     return (
         <>
             {/* column filter */}
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-1">
                 <Input
                     placeholder="Filter name..."
                     value={(table.getColumn(typeName)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(typeName)?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                />
+                <Input
+                    placeholder="Filter by date..."
+                    value={(table.getColumn("Date_Enregistrement")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("Date_Enregistrement")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                 />

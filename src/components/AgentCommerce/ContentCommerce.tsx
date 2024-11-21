@@ -34,6 +34,7 @@ import { QuickPostData } from "../AgentsTels/QuickPostData";
 import { QuickcolumnsCommerce, QuickLivraisonCommerce } from "./AquickColumnCommerce";
 import { ImportedColumns } from "../Superviseur/Culumns/CulumnsDataImported";
 import { useAppContext } from "../context/AppContext";
+import { useSession } from "next-auth/react";
 
 export default function ContentCommerce() {
     const [fileName, setFileName] = useState("");
@@ -47,6 +48,7 @@ export default function ContentCommerce() {
     const [SuccesMessage, SetSuccesMessage] = useState<string>();
     const [QuickPoste, setQuickPoste] = useState<QuickLivraisonCommerce[]>([]);
     const { ContactData, setContactData } = useAppContext();
+    const { data: session, status } = useSession();
 
 
     const selcte = useForm<z.infer<typeof FormSchema>>({
@@ -171,13 +173,17 @@ export default function ContentCommerce() {
         'Email',
         'Telephone',
         'Adresse',
+        'Bp',
         'Provenance',
         'Nombre_colis',
         'Poids',
         'Frais_postaux',
         'Frais_Douane',
         'Reference',
+        'Commande',
         'Date_abonnement',
+        'Date_Expedition',
+        'Date_Reception_Poste',
         'Nationaliter'
     ];
 
@@ -186,36 +192,36 @@ export default function ContentCommerce() {
         Email: string;
         Telephone: string;
         Adresse: string;
+        Bp: string;
         Provenance: string;
         Nombre_colis: string;
         Poids: string;
         Frais_postaux: string;
         Frais_Douane: string;
         Reference: string;
+        Commande: string;
         Date_abonnement: string;
+        Date_Expedition: string;
+        Date_Reception_Poste: string;
         Nationaliter: string;
     }
 
     const readExcelFile = (file: File): Promise<DataRow[]> => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader(); // Initialisation du FileReader ici
+            const reader = new FileReader();
 
             reader.onload = (e) => {
-                const binaryStr = e.target?.result; // Vérification de la présence de e.target
+                const binaryStr = e.target?.result;
                 const workbook = XLSX.read(binaryStr, { type: 'binary' });
 
-                const sheetName = workbook.SheetNames[0]; // Récupère la première feuille
+                const sheetName = workbook.SheetNames[0];
                 const sheet = workbook.Sheets[sheetName];
 
-
-                // Convertir la feuille en JSON avec des valeurs par défaut pour les cellules vides
-                const jsonData: DataRow[] = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                // Convertir la feuille en JSON avec `cellDates: true` pour traiter les dates correctement
+                const jsonData: DataRow[] = XLSX.utils.sheet_to_json(sheet, { defval: '', cellDates: true });
 
                 // Récupérer les en-têtes du fichier
                 const fileHeaders = Object.keys(jsonData[0]);
-
-                // Debug: Afficher les en-têtes du fichier pour voir les différences
-                // console.log("En-têtes du fichier:", fileHeaders);
 
                 // Comparer les en-têtes récupérées avec celles attendues
                 if (JSON.stringify(fileHeaders) !== JSON.stringify(expectedHeaders)) {
@@ -227,18 +233,42 @@ export default function ContentCommerce() {
                     );
                 }
 
+                // Reformatage des dates pour les colonnes spécifiques
+                const dateColumns = ['Date_abonnement', 'Date_Expedition', 'Date_Reception_Poste'];
+                const formattedData = jsonData.map(row => {
+                    const formattedRow = { ...row };
+
+                    for (const key in formattedRow) {
+                        if (dateColumns.includes(key)) {
+                            if (formattedRow[key] instanceof Date) {
+                                // Si la valeur est déjà une date, on la formate en ISO
+                                formattedRow[key] = (formattedRow[key] as Date).toISOString().split('T')[0];
+                            } else if (typeof formattedRow[key] === 'number') {
+                                // Si c'est un nombre (représentant une date dans Excel), on le convertit en date
+                                const excelDate = new Date((formattedRow[key] as number - 25569) * 86400 * 1000); // Convertir Excel date en JavaScript date
+                                formattedRow[key] = excelDate.toISOString().split('T')[0]; // Formater la date en ISO string (YYYY-MM-DD)
+                            }
+                        }
+                    }
+
+                    return formattedRow;
+                });
+
                 // Si tout est correct, retourner les données avec les en-têtes
-                resolve(jsonData);
+                resolve(formattedData);
             };
 
             reader.onerror = (err) => {
-
                 reject(err); // Gestion des erreurs de lecture
             };
 
-            reader.readAsBinaryString(file); // Lire le fichier comme une chaîne binaire
+            reader.readAsBinaryString(file);
         });
     };
+
+
+
+
 
 
     //fonction fetch QuickPoste 
@@ -274,7 +304,7 @@ export default function ContentCommerce() {
 
 
     const onsubmit = async (values: z.infer<typeof FormSchema>) => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=InsertDataImported&id=7`; // Correction de l'URL
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=InsertDataImported&id=${session?.user?.id}`; // Correction de l'URL
         try {
             // Lire le fichier Excel et convertir en JSON
             const data = await readExcelFile(values.file);

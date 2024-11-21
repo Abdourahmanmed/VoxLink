@@ -39,7 +39,7 @@ export default function Reacffectation() {
     }
     return (
         <div>
-            <DataTableReaffect data={StatusAppel} columns={ReportColumns} typeName="Nom" FetchData={FetchStatus} />
+            <DataTableReaffect data={StatusAppel} columns={ReportColumns} typeName="Nom" FetchData={FetchStatus} SetData={SetStatusAppel} />
         </div>
     )
 }

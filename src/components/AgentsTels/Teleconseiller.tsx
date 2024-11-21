@@ -18,6 +18,7 @@ const Menu = [
             { title: "Retard paiement", link: "/Teleconseiller/Recouvrement/Retard_paiement" },
             { title: "Redevance de l'annee", link: "/Teleconseiller/Recouvrement/Redevance_annee" },
             { title: "Nouveau Abonnee", link: "/Teleconseiller/Recouvrement/Nouveau_Abonne" },
+            { title: "Recouvrement societe", link: "/Teleconseiller/Recouvrement/Recouvrement_societe" },
         ]
     },
     { title: "Demande livraison", icon: <Truck />, link: "/Teleconseiller/Demande_livraison" },

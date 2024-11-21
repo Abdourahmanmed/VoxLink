@@ -52,6 +52,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     typeName: string;
     FetchData: (value: z.infer<typeof SelectionCompagne>) => void;
+    SetData: Dispatch<SetStateAction<TData[]>>;
 }
 
 export function DataTableReaffect<TData, TValue>({
@@ -59,6 +60,7 @@ export function DataTableReaffect<TData, TValue>({
     data,
     typeName,
     FetchData,
+    SetData,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -173,21 +175,22 @@ export function DataTableReaffect<TData, TValue>({
 
     const handleReassign = async () => {
         const selectedRowIds = getSelectedRowIds();
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Reaffectation`;
-        try {
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=Reaffectation`;
 
-            const playload = {
+        try {
+            const payload = {
                 campagne: selectedCompagne,
                 AgentsId: selectedAgent,
                 ContactIds: selectedRowIds,
-            }
+            };
+
             // Envoi de la requête POST avec les données du formulaire
             const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(playload),
+                body: JSON.stringify(payload),
             });
 
             // Vérification de la requête
@@ -202,15 +205,17 @@ export function DataTableReaffect<TData, TValue>({
                 setErrorMessage(responseData.error);
             } else if (responseData.success) {
                 setSuccessMessage(responseData.success);
-            }
 
+                // Supprimez les lignes sélectionnées après succès
+                SetData((prevData) =>
+                    prevData.filter((row) => !selectedRowIds.includes(row.id))
+                );
+            }
         } catch (error) {
             console.error("Erreur :", error);
         }
+    };
 
-        // Appeler une API ou gérer la logique de réaffectation ici avec selectedRowIds et selectedAgent
-        // setIsDialogOpen(false);
-    }
 
 
     useEffect(() => {

@@ -70,6 +70,7 @@ export const TeleconseilRoutes = [
     "/Teleconseiller/Recouvrement/Retard_paiement",
     "/Teleconseiller/Recouvrement/Redevance_annee",
     "/Teleconseiller/Recouvrement/Nouveau_Abonne",
+    "/Teleconseiller/Recouvrement/Recouvrement_societe",
     "/Teleconseiller/Status_des_appels/Repondu",
     "/Teleconseiller/Status_des_appels/Rappeller",
     "/Teleconseiller/Status_des_appels/Indisponible",

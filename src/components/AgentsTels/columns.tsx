@@ -24,10 +24,13 @@ export type User = {
     Nom: string;
     Telephone: number;
     Nombre_colis: string;
+    commande: string;
     Poids: string;
+    Bp: string;
     Frais_Postaux: string,
     Frais_Douane: string,
     Provenance: string,
+    Reference: string,
     Adresse: string,
     Date_Abonnement: string,
     Date_Enregistrement	: string,
@@ -70,6 +73,10 @@ export const columns: ColumnDef<User>[] = [
         header: "Telephone",
     },
     {
+        accessorKey: "Bp",
+        header: "Boite Postale",
+    },
+    {
         accessorKey: "Nombre_colis",
         header: "Nombre colis",
     },
@@ -80,6 +87,14 @@ export const columns: ColumnDef<User>[] = [
     {
         accessorKey: "Provenance",
         header: "Provenance",
+    },
+    {
+        accessorKey: "Reference",
+        header: "Reference",
+    },
+    {
+        accessorKey: "commande",
+        header: "Commande",
     },
     {
         accessorKey: "Adresse",

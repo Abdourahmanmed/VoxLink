@@ -103,6 +103,14 @@ export function QuickPostData<TData, TValue>({
                                 className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                             />
                             <Input
+                                placeholder="Filter By Telephone..."
+                                value={(table.getColumn("Telephone")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) =>
+                                    table.getColumn("Telephone")?.setFilterValue(event.target.value)
+                                }
+                                className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                            />
+                            <Input
                                 placeholder="Filter By Date appel..."
                                 value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
                                 onChange={(event) =>

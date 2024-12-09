@@ -272,6 +272,14 @@ export function DataTableReaffect<TData, TValue>({
                 </Form>
                 {path === "/Superviseur/ReAffectation" && (
                     <>
+                        <Input
+                            placeholder="Filter par date appel..."
+                            value={(table.getColumn("Date_appel")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Date_appel")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
                         {/* <button
                             className="text-white bg-blue hover:bg-blue/90 duration-300 p-2 w-max flex justify-center items-center space-x-2 rounded-lg"
                             onClick={exportToExcel}

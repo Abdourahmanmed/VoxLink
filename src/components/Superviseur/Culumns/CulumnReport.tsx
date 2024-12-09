@@ -19,6 +19,7 @@ import {
 export type Report = {
     id: string;
     Nom: string;
+    Bp:string;
     Telephone: number;
     Adresse: string;
     Nombre_colis: string;
@@ -28,6 +29,7 @@ export type Report = {
     Status: string;
     Commentaire: string;
     Date_appel:string;
+    Date_Abonnement:string;
     Agents:string;
 };
 
@@ -69,6 +71,10 @@ export const ReportColumns: ColumnDef<Report>[] = [
         },
     },
     {
+        accessorKey: "Bp",
+        header: "Boite Postal",
+    },
+    {
         accessorKey: "Telephone",
         header: "Telephone",
     },
@@ -103,6 +109,10 @@ export const ReportColumns: ColumnDef<Report>[] = [
     {
         accessorKey: "Date_appel",
         header: "Date D'appel",
+    },
+    {
+        accessorKey: "Date_Abonnement",
+        header: "Date D'abonnement",
     },
     {
         accessorKey: "Agents",

@@ -219,7 +219,7 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
                 }
             }, [user.id_contact]); // Fetch data when the dialog is opened
 
-            if (path == "/Teleconseiller/Status_des_appels/Tous_les_Rappels" || path == "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles") {
+            if (path == "/Teleconseiller/Status_des_appels/Tous_les_Rappels" || path == "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles" || path == "/Teleconseiller/Status_des_appels/Repondu") {
                 return (
                     <div className="flex gap-2">
                         <Dialog key={user.id}>

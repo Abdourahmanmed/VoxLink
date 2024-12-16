@@ -19,7 +19,8 @@ import {
 export type Report = {
     id: string;
     Nom: string;
-    Bp:string;
+    Bp: string;
+    commande: string;
     Telephone: number;
     Adresse: string;
     Nombre_colis: string;
@@ -28,9 +29,9 @@ export type Report = {
     Frais_Douane: string;
     Status: string;
     Commentaire: string;
-    Date_appel:string;
-    Date_Abonnement:string;
-    Agents:string;
+    Date_appel: string;
+    Date_Abonnement: string;
+    Agents: string;
 };
 
 export const ReportColumns: ColumnDef<Report>[] = [
@@ -73,6 +74,10 @@ export const ReportColumns: ColumnDef<Report>[] = [
     {
         accessorKey: "Bp",
         header: "Boite Postal",
+    },
+    {
+        accessorKey: "commande",
+        header: "Numero commande",
     },
     {
         accessorKey: "Telephone",

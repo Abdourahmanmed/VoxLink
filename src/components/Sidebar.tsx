@@ -2,22 +2,23 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { Power } from 'lucide-react';
+import { Power } from "lucide-react";
 import { LogOutButton } from "@/actions/route";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "./ui/scroll-area";
+import Link from "next/link";
 
 // Interface pour les sous-menus
 interface SubMenuItem {
   title: string;
-  link: string;
+  link: string; // Les liens doivent toujours être des chaînes valides
 }
 
 // Interface pour les éléments du menu
 interface MenuItem {
   title: string;
   icon: ReactNode;
-  link?: string;
+  link?: string; // Peut être optionnel
   Submenu?: SubMenuItem[]; // Sous-menu optionnel
 }
 
@@ -37,7 +38,7 @@ export default function Sidebar({ menu, titre }: SideBarProps) {
 
   // Fonction pour vérifier si un sous-menu est actif
   const isSubMenuActive = (submenu: SubMenuItem[]) => {
-    return submenu.some(subItem => pathname === subItem.link);
+    return submenu.some((subItem) => pathname === subItem.link);
   };
 
   return (
@@ -59,28 +60,31 @@ export default function Sidebar({ menu, titre }: SideBarProps) {
                   <DropdownMenuTrigger asChild>
                     <div
                       className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-md w-full transition-colors duration-300
-                        ${(open === item.title || isSubMenuActive(item.Submenu)) ? "bg-white text-blue" : "text-white"}
+                        ${open === item.title || (item.Submenu && isSubMenuActive(item.Submenu)) ? "bg-white text-blue" : "text-white"}
                         group hover:bg-white`}
                       onClick={() => toggleSubMenu(item.title)}
                     >
-                      <span className={`mr-2 duration-500 group-hover:text-blue ${isSubMenuActive(item.Submenu) ? "text-blue" : "text-white"}`}>
+                      <span
+                        className={`mr-2 duration-500 group-hover:text-blue ${item.Submenu && isSubMenuActive(item.Submenu) ? "text-blue" : "text-white"
+                          }`}
+                      >
                         {item.icon}
                       </span>
                       <span className="text-sm group-hover:text-blue">{item.title}</span>
                     </div>
                   </DropdownMenuTrigger>
-                  {open === item.title && (
+                  {open === item.title && item.Submenu && (
                     <DropdownMenuContent className="w-full">
                       {item.Submenu.map((subItem, subIndex) => (
                         <DropdownMenuItem asChild key={subIndex}>
-                          <a
+                          <Link
                             href={subItem.link}
                             className={`text-sm block w-full cursor-pointer p-2 transition-colors duration-300
                               ${pathname === subItem.link ? "text-blue" : "text-gray-800"}
                               hover:text-blue`}
                           >
                             {subItem.title}
-                          </a>
+                          </Link>
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -88,17 +92,22 @@ export default function Sidebar({ menu, titre }: SideBarProps) {
                 </DropdownMenu>
               ) : (
                 // Élément de menu simple sans sous-menu
-                <a
-                  href={item.link}
-                  className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-md w-full transition-colors duration-300
-                    ${pathname === item.link ? "bg-white text-blue" : "text-white"}
-                    group hover:bg-white`}
-                >
-                  <span className={`mr-2 duration-500 ${pathname === item.link ? "text-blue" : "text-white"} group-hover:text-blue`}>
-                    {item.icon}
-                  </span>
-                  <span className="text-sm group-hover:text-blue">{item.title}</span>
-                </a>
+                item.link && (
+                  <Link
+                    href={item.link}
+                    className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-md w-full transition-colors duration-300
+                      ${pathname === item.link ? "bg-white text-blue" : "text-white"}
+                      group hover:bg-white`}
+                  >
+                    <span
+                      className={`mr-2 duration-500 ${pathname === item.link ? "text-blue" : "text-white"
+                        } group-hover:text-blue`}
+                    >
+                      {item.icon}
+                    </span>
+                    <span className="text-sm group-hover:text-blue">{item.title}</span>
+                  </Link>
+                )
               )}
             </li>
           ))}

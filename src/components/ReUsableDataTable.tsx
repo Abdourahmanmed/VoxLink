@@ -145,7 +145,7 @@ export function DataTableImportation<TData, TValue>({
 
     return (
         <>
-            <div className="flex items-center gap-8 bg-blanc w-full h-max rounded-lg shadow-blue p-2">
+            <div className="flex items-center gap-2 bg-blanc w-full h-max rounded-lg shadow-blue p-2">
                 <Input
                     placeholder="Filter name..."
                     value={(table.getColumn(typeName)?.getFilterValue() as string) ?? ""}
@@ -223,6 +223,22 @@ export function DataTableImportation<TData, TValue>({
                             value={(table.getColumn("Agents")?.getFilterValue() as string) ?? ""}
                             onChange={(event) =>
                                 table.getColumn("Agents")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                        <Input
+                            placeholder="Filter commande..."
+                            value={(table.getColumn("commande")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("commande")?.setFilterValue(event.target.value)
+                            }
+                            className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
+                        />
+                        <Input
+                            placeholder="Filter Telephone..."
+                            value={(table.getColumn("Telephone")?.getFilterValue() as string) ?? ""}
+                            onChange={(event) =>
+                                table.getColumn("Telephone")?.setFilterValue(event.target.value)
                             }
                             className="max-w-sm focus:ring-2 focus:ring-blue text-blue"
                         />

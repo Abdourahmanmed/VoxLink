@@ -47,9 +47,11 @@ export type TousLescontact = {
     Adresse: string;
     Status: string;
     Commentaire: string;
+    commande: string;
     Nombre_colis: string;
     Poids: string;
     Frais_Postaux: string;
+    Frais_Douane: string;
     Compagne: string;
     Date_appel: string;
     Provenance: string;
@@ -101,6 +103,10 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
         header: "Telephone",
     },
     {
+        accessorKey: " commande",
+        header: "Numero de commande",
+    },
+    {
         accessorKey: "Adresse",
         header: "Adresse",
     },
@@ -115,6 +121,10 @@ export const TousLescontactColumns: ColumnDef<TousLescontact>[] = [
     {
         accessorKey: "Frais_Postaux",
         header: "Frais Postaux",
+    },
+    {
+        accessorKey: "Frais_Douane",
+        header: "Frais Douane",
     },
     {
         accessorKey: "Provenance",

@@ -58,7 +58,7 @@ export default function Rappeller() {
     };
     // Fonction pour récupérer tous les contacts à rappeler par campagne
     const fetchRapeller = async (data: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherParCompagne&id=${session?.user?.id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=AfficherParCompagne&id=${session?.user?.id}`;
         try {
             const playload = {
                 Compagne: data

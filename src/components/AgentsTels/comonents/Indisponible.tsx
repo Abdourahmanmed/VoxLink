@@ -58,7 +58,7 @@ export default function Indisponible() {
     };
     // Fonction pour récupérer tous les contacts à rappeler par campagne
     const fetchIndisponible = async (data: z.infer<typeof SelectionCompagne>) => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AfficherAppelIndisponible&id=${session?.user?.id}`;
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=AfficherAppelIndisponible&id=${session?.user?.id}`;
         try {
             const playload = {
                 Compagne: data

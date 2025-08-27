@@ -175,6 +175,8 @@ export default function ContentCommerce() {
         'Adresse',
         'Bp',
         'Provenance',
+        'localite',
+        'region',
         'Nombre_colis',
         'Poids',
         'Frais_postaux',
@@ -194,6 +196,8 @@ export default function ContentCommerce() {
         Adresse: string;
         Bp: string;
         Provenance: string;
+        localite: string;
+        region: string;
         Nombre_colis: string;
         Poids: string;
         Frais_postaux: string;
@@ -304,10 +308,11 @@ export default function ContentCommerce() {
 
 
     const onsubmit = async (values: z.infer<typeof FormSchema>) => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=InsertDataImported&id=${session?.user?.id}`; // Correction de l'URL
+        const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=InsertDataImported&id=${session?.user?.id}`; // Correction de l'URL
         try {
             // Lire le fichier Excel et convertir en JSON
             const data = await readExcelFile(values.file);
+            console.log(data)
             // Préparation des données à envoyer
             const payload = {
                 Compagne: values.Compagne,

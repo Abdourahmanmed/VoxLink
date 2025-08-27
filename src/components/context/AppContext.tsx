@@ -21,6 +21,7 @@ interface AppContextType {
     Data: User[];
     CompaData: CompagneData[];
     SetCompaData: (data: CompagneData[]) => void;
+    setData: (data: User[]) => void;
     onSubmitCompagne: (values: z.infer<typeof CompagneSchema>) => void;
     onSubmitUtilisateur: (values: z.infer<typeof RegisterSchema>) => void;
     setSuccessMessage: (data: string) => void;
@@ -134,7 +135,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Ajouter une compagne
     const onSubmitCompagne = async (values: z.infer<typeof CompagneSchema>) => {
         startTransition(async () => {
-            const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=AjouterCompagne&id=${session?.user?.id}`;
+            const apiUrl = `http://192.168.100.4:8080/Vox_Backend/api.php?method=AjouterCompagne&id=${session?.user?.id}`;
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
@@ -474,7 +475,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <AppContext.Provider value={{ onSubmit, handleDeleteContact, EditerDemamnde, handleDeleteLivraison, QuickPoste, setQuickPoste, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser }}>
+        <AppContext.Provider value={{ onSubmit, handleDeleteContact, EditerDemamnde, handleDeleteLivraison, QuickPoste, setQuickPoste, contacts, EditerCompagne, handleDeleteUser, successMessage, errorMessage, setSuccessMessage, setErrorMessage, isPending, Data, loading, CompaData, SetCompaData, onSubmitCompagne, handleDelete, EditerContact, ContactData, setContactData, UsersData, SetUsersData, onSubmitUtilisateur, EditerUser, setData }}>
             {children}
         </AppContext.Provider>
     );

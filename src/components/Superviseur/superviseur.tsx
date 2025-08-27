@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../Sidebar";
-import { ArrowRight, Building2, ClipboardPen, Database, FileChartColumnIncreasing, FileX2, LayoutDashboard, LayoutList, Megaphone, RefreshCcw, Users, } from 'lucide-react';
+import { ArrowRight, Building2, ClipboardPen, Database, FileChartColumnIncreasing, FileX2, Handshake, LayoutDashboard, LayoutList, Megaphone, RefreshCcw, Users, } from 'lucide-react';
 import Maincontent from "../Maincontent";
 import { usePathname } from "next/navigation";
 import SupContent from "./SupContent";
@@ -11,6 +11,8 @@ const Menu = [
     { title: "ReAffectation", icon: <RefreshCcw />, link: "/Superviseur/ReAffectation" },
     { title: "Répartition des Contacts", icon: <LayoutList />, link: "/Superviseur/Repartition_des_Contacts" },
     { title: "Agents", icon: <Users />, link: "/Superviseur/Agents" },
+    { title: "Mass Enqueter", icon: <Handshake />, link: "/Superviseur/Mass" },
+    { title: "Affectation Mass deleguer", icon: <ArrowRight />, link: "/Superviseur/Affectation_Mass_deleguer" },
     { title: "Compagner", icon: <Megaphone />, link: "/Superviseur/Compagner" },
     { title: "Donne importer", icon: <Database />, link: "/Superviseur/Donne_importer" },
     { title: "status des appelles", icon: <FileChartColumnIncreasing />, link: "/Superviseur/status_des_appelles" },

@@ -14,6 +14,8 @@ import AboutiState from "./comonents/Abouti";
 import TousLeRappels from "./comonents/TousLesRapels";
 import QuickPostes from "./comonents/QuickPoste";
 import TousLesIndisponibles from "./comonents/TousLesInsponibles";
+import { Masscolumns } from "./MassCol";
+import MassDelguer from "./MassDelguer";
 
 // Titre dynamique
 interface TitleProps {
@@ -38,6 +40,8 @@ export default function Content({ title }: TitleProps) {
                 <DemandeLivraisons />
             ) : path === "/Teleconseiller/Status_des_appels/Rappeller" ? (
                 <Rappeller />
+            ) : path === "/Teleconseiller/Mass_delegue" ? (
+                <MassDelguer title={title} />
             ) : path === "/Teleconseiller/Status_des_appels/Repondu" ? (
                 <ReponduState />
             ) : path === "/Teleconseiller/Status_des_appels/Indisponible" ? (
@@ -50,6 +54,21 @@ export default function Content({ title }: TitleProps) {
                 <QuickPostes />
             ) : path === "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles" ? (
                 <TousLesIndisponibles />
+            ) : path === "/Teleconseiller/Mass" ? (
+                <div className="bg-white w-full h-max rounded p-4 shadow-blue">
+                    <h1 className="text-center capitalize p-4 text-blue font-semibold">
+                        Liste de contacts
+                    </h1>
+
+                    {status === "loading" ? (
+                        <div className="flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-solid border-transparent"></div>
+                            <small className="ml-2">Chargement...</small>
+                        </div>
+                    ) : (
+                        <DataTable data={Data} columns={Masscolumns} typeName="Nom" />
+                    )}
+                </div>
             ) : (
                 <div className="flex gap-4">
                     <div className="bg-white w-[50%] h-max rounded p-4 shadow-blue">

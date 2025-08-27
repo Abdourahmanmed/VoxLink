@@ -33,6 +33,8 @@ export type ImportedData = {
     Nom: string;
     Email: string;
     Telephone: number;
+    localite:string;
+    region:string;
     Provenance: string;
     Date_Enregistrement: string;
     Nombre_colis: number;
@@ -89,6 +91,14 @@ export const ImportedColumns: ColumnDef<ImportedData>[] = [
     {
         accessorKey: "Telephone",
         header: "Telephone",
+    },
+    {
+        accessorKey: "localite",
+        header: "localite",
+    },
+    {
+        accessorKey: "region",
+        header: "region",
     },
     {
         accessorKey: "Adresse",

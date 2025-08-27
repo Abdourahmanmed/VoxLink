@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../Sidebar";
-import { ShoppingBag, Box, DollarSign, Truck, BellPlus, PackageCheck, Mails, ClipboardPen, HousePlug, ConciergeBell } from 'lucide-react';
+import { ShoppingBag, Box, DollarSign, Truck, BellPlus, PackageCheck, Mails, ClipboardPen, HousePlug, ConciergeBell, Handshake } from 'lucide-react';
 import Maincontent from "../Maincontent";
 import { usePathname } from "next/navigation";
 import Content from "./Content";
@@ -11,6 +11,8 @@ const Menu = [
     { title: "Colis-Ems", icon: <Mails />, link: "/Teleconseiller/Colis-Ems" },
     { title: "Petite paquet", icon: <Box />, link: "/Teleconseiller/Petite_paquet" },
     { title: "Cartin", icon: <PackageCheck />, link: "/Teleconseiller/Cartin" },
+    { title: "Mass enqueter", icon: <Handshake />, link: "/Teleconseiller/Mass" },
+    { title: "Mass delegue ", icon: <Handshake />, link: "/Teleconseiller/Mass_delegue" },
     { title: "E-suuq Prospection", icon: <HousePlug />, link: "/Teleconseiller/E-suuq_Prospection"},
     { title: "Maison citoyens", icon: <HousePlug />, link: "/Teleconseiller/Maison_Du_citoyens"},
     {

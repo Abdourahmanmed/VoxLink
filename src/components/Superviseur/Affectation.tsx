@@ -25,7 +25,15 @@ import {
 } from "@/components/ui/form";
 import { FormError } from "../FormError";
 import { FormSucces } from "../FormSucces";
-
+// Type facultatif si tu veux typer proprement
+type Compagne = {
+    id?: number | string;
+    Nom?: string;
+    nom?: string;
+    Name?: string;
+    name?: string;
+    [k: string]: any;
+};
 export default function Affectation() {
     // States
     const [isPending, startTransition] = useTransition();
@@ -34,7 +42,8 @@ export default function Affectation() {
     const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const [selectedContacts, setSelectedContacts] = useState([]); // Contacts sélectionnés
-    const [selectCompagner, setselectCompagner] = useState([]);
+    const [selectCompagner, setSelectCompagner] = useState<Compagne[]>([]);
+    // const [selectCompagner, setselectCompagner] = useState([]);
 
     // Fetch agents  logic here...
     const fetchAgents = async () => {
@@ -88,34 +97,68 @@ export default function Affectation() {
         }
     };
 
-    //Fetch compagnes logic here...
+
+
+
+
+    // Utilitaire : normaliser texte (accents, espaces, casse)
+    const normalize = (s: unknown) =>
+        String(s ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // retire les accents
+            .trim()
+            .toLowerCase();
+
+    // Récupère un nom quelle que soit la clé renvoyée par l’API
+    const getName = (c: Compagne) => c.Nom ?? c.nom ?? c.Name ?? c.name ?? "";
+
+    // Fetch compagnes + filtre + déduplication
     const fetchCompagner = async () => {
-        const apiUrl = `http://192.168.100.4:8080/Vox_Backend//api.php?method=Compagnes`;
+        const apiUrl = "http://192.168.100.4:8080/Vox_Backend/api.php?method=Compagnes";
 
         try {
-            const response = await fetch(apiUrl, { method: 'GET' });
+            const response = await fetch(apiUrl, { method: "GET" });
 
-            // Vérification de la réponse
             if (!response.ok) {
-                console.error("Erreur lors de l'exécution de la requête.");
+                console.error("❌ Erreur HTTP:", response.status, response.statusText);
                 return;
             }
 
-            const responseData = await response.json();
+            const json = await response.json();
 
-            // Vérification des erreurs dans la réponse
-            if (responseData.error) {
-                console.error("Erreur du serveur:", responseData.error);
+            // L’API peut renvoyer directement un tableau, ou { data: [...] }
+            const list: Compagne[] = Array.isArray(json)
+                ? json
+                : Array.isArray(json?.data)
+                    ? json.data
+                    : [];
+
+            if (!Array.isArray(list) || list.length === 0) {
+                console.warn("ℹ️ Aucune campagne trouvée ou format inattendu:", json);
+                setSelectCompagner([]);
                 return;
             }
 
-            // Mettre à jour l'état avec les données récupérées
-            setselectCompagner(responseData);
+            // Exclure "Mass delegue" (insensible aux accents/espaces/majuscules)
+            const blocked = "mass delegue";
+            const filtered = list.filter((c) => normalize(getName(c)) !== blocked);
 
+            // Dédupliquer par nom normalisé (au cas où l’API renvoie des doublons)
+            const uniqueMap = new Map<string, Compagne>();
+            for (const item of filtered) {
+                const key = normalize(getName(item));
+                if (key && !uniqueMap.has(key)) uniqueMap.set(key, item);
+            }
+
+            const unique = Array.from(uniqueMap.values());
+
+            setSelectCompagner(unique);
         } catch (error) {
-            console.error("Erreur lors de la récupération des campagnes:", error);
+            console.error("❌ Erreur lors de la récupération des campagnes:", error);
+            setSelectCompagner([]);
         }
     };
+
 
     //le useEffect pour afficher les donnes.
     useEffect(() => {

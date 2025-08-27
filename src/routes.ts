@@ -47,6 +47,7 @@ export const SuperviseurRoutes = [
     "/Superviseur/Dashbord",
     "/Superviseur/Affectation",
     "/Superviseur/Agents",
+    "/Superviseur/Mass",
     "/Superviseur/Compagner",
     "/Superviseur/Donne_importer",
     "/Superviseur/status_des_appelles",
@@ -55,6 +56,7 @@ export const SuperviseurRoutes = [
     "/Superviseur/QuicPoste",
     "/Superviseur/Repartition_des_Contacts",
     "/Superviseur/Historique",
+    "/Superviseur/Affectation_Mass_deleguer",
 ];
 
 /**
@@ -77,11 +79,13 @@ export const TeleconseilRoutes = [
     "/Teleconseiller/Status_des_appels/Abouti",
     "/Teleconseiller/Status_des_appels/Tous_les_Rappels",
     "/Teleconseiller/Cartin",
+    "/Teleconseiller/Mass",
     "/Teleconseiller/Quick_poste",
     "/Teleconseiller/Maison_Du_citoyens",
     "/Teleconseiller/E-suuq_Prospection",
     "/Teleconseiller/Status_des_appels/Tous_les_Indisponibles",
     "/Teleconseiller/Bonne_reception_de_la_facture_BP",
+    "/Teleconseiller/Mass_delegue",
 ];
 
 /**

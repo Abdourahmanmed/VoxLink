@@ -107,6 +107,30 @@ export const FormQuickPost = z.object({
 })
 
 
+// ✅ Schéma Zod avec 19 réponses obligatoires
+export  const schema = z.object({
+    question1: z.string().min(1, "Réponse obligatoire"),
+    question2: z.string().min(1, "Réponse obligatoire"),
+    question3: z.string().min(1, "Réponse obligatoire"),
+    question4: z.string().min(1, "Réponse obligatoire"),
+    question5: z.string().min(1, "Réponse obligatoire"),
+    question6: z.string().min(1, "Réponse obligatoire"),
+    question7: z.string().min(1, "Réponse obligatoire"),
+    question8: z.string().min(1, "Réponse obligatoire"),
+    question9: z.string().min(1, "Réponse obligatoire"),
+    question10: z.string().min(1, "Réponse obligatoire"),
+    question11: z.string().min(1, "Réponse obligatoire"),
+    question12: z.string().min(1, "Réponse obligatoire"),
+    question13: z.string().min(1, "Réponse obligatoire"),
+    question14: z.string().min(1, "Réponse obligatoire"),
+    question15: z.string().min(1, "Réponse obligatoire"),
+    question16: z.string().min(1, "Réponse obligatoire"),
+    question17: z.string().min(1, "Réponse obligatoire"),
+    question18: z.string().min(1, "Réponse obligatoire"),
+    question19: z.string().min(1, "Réponse obligatoire"),
+});
+
+
 
 
 

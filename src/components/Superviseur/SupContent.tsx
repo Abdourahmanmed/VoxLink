@@ -10,6 +10,8 @@ import Reacffectation from "./Reacffectation";
 import SupQuickPoste from "./SupQuickPoste";
 import Repartition_des_contacts from "./Repartition_des_Contacts";
 import Historique from "./Historique";
+import Mass from "./Mass";
+import Affectation_Mass_deleguer from "./Affectation_Mass_deleguer";
 
 export default function SupContent() {
     const path = usePathname();
@@ -64,7 +66,15 @@ export default function SupContent() {
             )}
             {/* // Historique  */}
             {path && path === "/Superviseur/Historique" && (
-              <Historique />
+                <Historique />
+            )}
+            {/* // Mass  */}
+            {path && path === "/Superviseur/Mass" && (
+                <Mass />
+            )}
+            {/* // Affectation Mass delguer  */}
+            {path && path === "/Superviseur/Affectation_Mass_deleguer" && (
+                <Affectation_Mass_deleguer />
             )}
         </>
     )
